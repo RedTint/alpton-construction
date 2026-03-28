@@ -29,6 +29,11 @@ dist-ssr
 .env.*
 !.env.example
 
+# Playwright
+test-results/
+playwright-report/
+playwright/.cache/
+
 # Supabase
 supabase/.temp/
 supabase/.branches/

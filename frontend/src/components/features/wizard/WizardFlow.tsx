@@ -51,21 +51,21 @@ export const WizardFlow: React.FC = () => {
               <div className="space-y-6">
                 <div className="flex flex-col space-y-2">
                   <label className="font-label text-xs tracking-widest uppercase text-on-surface-variant font-bold">Full Name</label>
-                  <input type="text" name="full_name" value={data.full_name} onChange={handleInputChange} className="bg-surface-container-high border border-transparent focus:border-primary/30 focus:bg-surface-container-lowest focus:ring-0 p-4 rounded-sm font-body text-primary outline-none transition-all" placeholder="John Doe" />
+                  <input data-testid="wizard-input-full_name" type="text" name="full_name" value={data.full_name} onChange={handleInputChange} className="bg-surface-container-high border border-transparent focus:border-primary/30 focus:bg-surface-container-lowest focus:ring-0 p-4 rounded-sm font-body text-primary outline-none transition-all" placeholder="John Doe" />
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="flex flex-col space-y-2">
                     <label className="font-label text-xs tracking-widest uppercase text-on-surface-variant font-bold">Email</label>
-                    <input type="email" name="email" value={data.email} onChange={handleInputChange} className="bg-surface-container-high border border-transparent focus:border-primary/30 focus:bg-surface-container-lowest focus:ring-0 p-4 rounded-sm font-body text-primary outline-none transition-all" placeholder="john@example.com" />
+                    <input data-testid="wizard-input-email" type="email" name="email" value={data.email} onChange={handleInputChange} className="bg-surface-container-high border border-transparent focus:border-primary/30 focus:bg-surface-container-lowest focus:ring-0 p-4 rounded-sm font-body text-primary outline-none transition-all" placeholder="john@example.com" />
                   </div>
                   <div className="flex flex-col space-y-2">
                     <label className="font-label text-xs tracking-widest uppercase text-on-surface-variant font-bold">Phone Number</label>
-                    <input type="tel" name="phone" value={data.phone} onChange={handleInputChange} className="bg-surface-container-high border border-transparent focus:border-primary/30 focus:bg-surface-container-lowest focus:ring-0 p-4 rounded-sm font-body text-primary outline-none transition-all" placeholder="+1 (555) 000-0000" />
+                    <input data-testid="wizard-input-phone" type="tel" name="phone" value={data.phone} onChange={handleInputChange} className="bg-surface-container-high border border-transparent focus:border-primary/30 focus:bg-surface-container-lowest focus:ring-0 p-4 rounded-sm font-body text-primary outline-none transition-all" placeholder="+1 (555) 000-0000" />
                   </div>
                 </div>
                 <div className="flex flex-col space-y-2">
                   <label className="font-label text-xs tracking-widest uppercase text-on-surface-variant font-bold">Facebook Account Name</label>
-                  <input type="text" name="facebook_account" value={data.facebook_account} onChange={handleInputChange} className="bg-surface-container-high border border-transparent focus:border-primary/30 focus:bg-surface-container-lowest focus:ring-0 p-4 rounded-sm font-body text-primary outline-none transition-all" placeholder="John Doe FB" />
+                  <input data-testid="wizard-input-facebook_account" type="text" name="facebook_account" value={data.facebook_account} onChange={handleInputChange} className="bg-surface-container-high border border-transparent focus:border-primary/30 focus:bg-surface-container-lowest focus:ring-0 p-4 rounded-sm font-body text-primary outline-none transition-all" placeholder="John Doe FB" />
                 </div>
               </div>
             </div>
@@ -79,16 +79,16 @@ export const WizardFlow: React.FC = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="flex flex-col space-y-2">
                     <label className="font-label text-xs tracking-widest uppercase text-on-surface-variant font-bold">Job Title</label>
-                    <input type="text" name="affiliation_job" value={data.affiliation_job} onChange={handleInputChange} className="bg-surface-container-high border border-transparent focus:border-primary/30 focus:bg-surface-container-lowest focus:ring-0 p-4 rounded-sm font-body text-primary outline-none transition-all" placeholder="CEO / Developer" />
+                    <input data-testid="wizard-input-affiliation_job" type="text" name="affiliation_job" value={data.affiliation_job} onChange={handleInputChange} className="bg-surface-container-high border border-transparent focus:border-primary/30 focus:bg-surface-container-lowest focus:ring-0 p-4 rounded-sm font-body text-primary outline-none transition-all" placeholder="CEO / Developer" />
                   </div>
                   <div className="flex flex-col space-y-2">
                     <label className="font-label text-xs tracking-widest uppercase text-on-surface-variant font-bold">Company/Business Name</label>
-                    <input type="text" name="affiliation_company" value={data.affiliation_company} onChange={handleInputChange} className="bg-surface-container-high border border-transparent focus:border-primary/30 focus:bg-surface-container-lowest focus:ring-0 p-4 rounded-sm font-body text-primary outline-none transition-all" placeholder="Acme Corp" />
+                    <input data-testid="wizard-input-affiliation_company" type="text" name="affiliation_company" value={data.affiliation_company} onChange={handleInputChange} className="bg-surface-container-high border border-transparent focus:border-primary/30 focus:bg-surface-container-lowest focus:ring-0 p-4 rounded-sm font-body text-primary outline-none transition-all" placeholder="Acme Corp" />
                   </div>
                 </div>
                 <div className="flex flex-col space-y-2">
                   <label className="font-label text-xs tracking-widest uppercase text-on-surface-variant font-bold">Years of Affiliation</label>
-                  <select name="affiliation_years" value={data.affiliation_years} onChange={handleInputChange} className="bg-surface-container-high border border-transparent focus:border-primary/30 focus:bg-surface-container-lowest focus:ring-0 p-4 rounded-sm font-body text-primary outline-none transition-all cursor-pointer">
+                  <select data-testid="wizard-select-affiliation_years" name="affiliation_years" value={data.affiliation_years} onChange={handleInputChange} className="bg-surface-container-high border border-transparent focus:border-primary/30 focus:bg-surface-container-lowest focus:ring-0 p-4 rounded-sm font-body text-primary outline-none transition-all cursor-pointer">
                     <option value="" disabled>Select Duration</option>
                     <option value="0-2">0 - 2 Years</option>
                     <option value="3-5">3 - 5 Years</option>
@@ -98,7 +98,7 @@ export const WizardFlow: React.FC = () => {
                 </div>
                 <div className="flex flex-col space-y-2">
                   <label className="font-label text-xs tracking-widest uppercase text-on-surface-variant font-bold">LinkedIn URL (Optional)</label>
-                  <input type="url" name="linkedin_url" value={data.linkedin_url} onChange={handleInputChange} className="bg-surface-container-high border border-transparent focus:border-primary/30 focus:bg-surface-container-lowest focus:ring-0 p-4 rounded-sm font-body text-primary outline-none transition-all" placeholder="https://linkedin.com/in/..." />
+                  <input data-testid="wizard-input-linkedin_url" type="url" name="linkedin_url" value={data.linkedin_url} onChange={handleInputChange} className="bg-surface-container-high border border-transparent focus:border-primary/30 focus:bg-surface-container-lowest focus:ring-0 p-4 rounded-sm font-body text-primary outline-none transition-all" placeholder="https://linkedin.com/in/..." />
                 </div>
               </div>
             </div>
@@ -115,6 +115,7 @@ export const WizardFlow: React.FC = () => {
                     {['Residential', 'Commercial', 'Bespoke/Custom'].map(type => (
                       <button 
                         key={type}
+                        data-testid={`wizard-btn-${type.toLowerCase().split('/')[0]}`}
                         onClick={() => updateData({ project_type: type })}
                         className={`p-4 rounded-sm font-headline text-sm tracking-wide transition-all border ${data.project_type === type ? 'bg-primary text-on-primary border-primary' : 'bg-surface-container-high text-primary border-transparent hover:border-primary/30'}`}
                       >
@@ -125,17 +126,17 @@ export const WizardFlow: React.FC = () => {
                 </div>
                 <div className="flex flex-col space-y-2">
                   <label className="font-label text-xs tracking-widest uppercase text-on-surface-variant font-bold">Estimated Budget</label>
-                  <select name="budget" value={data.budget} onChange={handleInputChange} className="bg-surface-container-high border border-transparent focus:border-primary/30 focus:bg-surface-container-lowest focus:ring-0 p-4 rounded-sm font-body text-primary outline-none transition-all cursor-pointer">
+                  <select data-testid="wizard-select-budget" name="budget" value={data.budget} onChange={handleInputChange} className="bg-surface-container-high border border-transparent focus:border-primary/30 focus:bg-surface-container-lowest focus:ring-0 p-4 rounded-sm font-body text-primary outline-none transition-all cursor-pointer">
                     <option value="" disabled>Select Budget Tier</option>
-                    <option value="100k-500k">$100k - $500k</option>
-                    <option value="500k-1m">$500k - $1M</option>
-                    <option value="1m-5m">$1M - $5M</option>
-                    <option value="5m+">$5M+</option>
+                    <option value="5m-25m">₱5M - ₱25M</option>
+                    <option value="25m-50m">₱25M - ₱50M</option>
+                    <option value="50m-250m">₱50M - ₱250M</option>
+                    <option value="250m+">₱250M+</option>
                   </select>
                 </div>
                 <div className="flex flex-col space-y-2">
                   <label className="font-label text-xs tracking-widest uppercase text-on-surface-variant font-bold">Desired Timeline</label>
-                  <select name="timeline" value={data.timeline} onChange={handleInputChange} className="bg-surface-container-high border border-transparent focus:border-primary/30 focus:bg-surface-container-lowest focus:ring-0 p-4 rounded-sm font-body text-primary outline-none transition-all cursor-pointer">
+                  <select data-testid="wizard-select-timeline" name="timeline" value={data.timeline} onChange={handleInputChange} className="bg-surface-container-high border border-transparent focus:border-primary/30 focus:bg-surface-container-lowest focus:ring-0 p-4 rounded-sm font-body text-primary outline-none transition-all cursor-pointer">
                     <option value="" disabled>Select Timeline</option>
                     <option value="immediately">Immediately (1-3 months)</option>
                     <option value="soon">Soon (3-6 months)</option>
@@ -181,6 +182,7 @@ export const WizardFlow: React.FC = () => {
               
               {currentStep < 3 ? (
                 <button 
+                  data-testid="wizard-btn-continue"
                   onClick={nextStep}
                   className="bg-primary text-on-primary px-8 py-3 rounded-sm font-headline font-bold text-xs tracking-widest uppercase hover:bg-primary-container transition-colors shadow-lg cursor-pointer"
                 >
@@ -188,6 +190,7 @@ export const WizardFlow: React.FC = () => {
                 </button>
               ) : (
                 <button 
+                  data-testid="wizard-btn-submit"
                   onClick={submitLead}
                   className="bg-secondary text-on-secondary px-8 py-3 rounded-sm font-headline font-bold text-xs tracking-widest uppercase hover:brightness-110 transition-colors shadow-lg cursor-pointer"
                 >
@@ -197,6 +200,7 @@ export const WizardFlow: React.FC = () => {
             </>
           ) : (
             <button 
+              data-testid="wizard-btn-close"
               onClick={resetWizard}
               className="w-full bg-primary text-on-primary px-8 py-4 rounded-sm font-headline font-bold text-sm tracking-widest uppercase hover:bg-primary-container transition-colors shadow-lg cursor-pointer"
             >

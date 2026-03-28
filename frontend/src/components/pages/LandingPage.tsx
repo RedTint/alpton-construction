@@ -1,6 +1,8 @@
 import { useWizardStore } from '../../stores/wizardStore';
 import { WizardFlow } from '../features/wizard/WizardFlow';
 
+import { Link } from 'react-router-dom';
+
 export function LandingPage() {
   const { setOpen } = useWizardStore();
 
@@ -217,6 +219,7 @@ export function LandingPage() {
           <h2 className="text-4xl sm:text-5xl md:text-6xl font-headline font-extrabold tracking-tight mb-8">Ready to define your legacy?</h2>
           <p className="text-lg sm:text-xl text-on-primary/60 mb-10 sm:mb-12">Start your journey today with our Build Now, Pay Later program.</p>
           <button 
+            data-testid="cta-hero"
             onClick={() => setOpen(true)}
             className="bg-secondary text-on-secondary w-full sm:w-auto px-10 sm:px-12 py-5 rounded-sm font-headline font-bold text-sm tracking-[0.2em] uppercase hover:scale-105 transition-transform active:scale-95 cursor-pointer shadow-[0_20px_40px_rgba(0,0,0,0.3)] hover:brightness-110"
           >
@@ -237,6 +240,7 @@ export function LandingPage() {
           <div className="col-span-1">
             <h4 className="font-label text-xs tracking-wide uppercase font-semibold text-primary mb-6">Explore</h4>
             <ul className="space-y-4">
+              <li><Link to="/admin/leads" data-testid="link-admin" className="text-on-surface-variant font-label text-xs tracking-wide uppercase font-bold hover:text-primary transition-colors">Admin Dashboard</Link></li>
               <li><a className="text-on-surface-variant font-label text-xs tracking-wide uppercase font-bold hover:text-primary transition-colors" href="#">Contact Us</a></li>
               <li><a className="text-on-surface-variant font-label text-xs tracking-wide uppercase font-bold hover:text-primary transition-colors" href="#">Company Profile</a></li>
             </ul>

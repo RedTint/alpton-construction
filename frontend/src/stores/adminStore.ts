@@ -16,8 +16,11 @@ interface AdminState {
 
 function calculateScore(lead: Partial<Lead>): number {
   let score = 30; // Base score
-  if (lead.budget === '5m+') score += 40;
-  if (lead.budget === '1m-5m') score += 20;
+  if (lead.budget === '250m+') score += 40;
+  else if (lead.budget === '50m-250m') score += 30;
+  else if (lead.budget === '25m-50m') score += 20;
+  else score += 10;
+  
   if (lead.project_type === 'Commercial') score += 15;
   if (lead.timeline === 'immediately') score += 15;
   if (lead.linkedin_url) score += 5;

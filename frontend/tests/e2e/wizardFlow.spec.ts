@@ -1,55 +1,90 @@
 import { test, expect } from '@playwright/test';
 
+const testLeads = [
+  {
+    name: 'Isabella Sterling', email: 'isabella@sterling.com', phone: '555-0199', fb: 'IsabellaS',
+    job: 'Executive Architect', company: 'Sterling Design', years: '5-10', link: 'https://linkedin.com/in/isabellasterling',
+    type: 'Commercial', budget: '250m+', timeline: 'immediately', expectedScore: 100
+  },
+  {
+    name: 'Marcus Vance', email: 'marcus.v@vanceinc.com', phone: '555-0211', fb: 'MVance',
+    job: 'CEO', company: 'Vance Inc', years: '10+', link: '',
+    type: 'Commercial', budget: '50m-250m', timeline: 'soon', expectedScore: 75
+  },
+  {
+    name: 'Elena Rostova', email: 'elena@gmail.com', phone: '555-0344', fb: '',
+    job: 'Homeowner', company: '', years: '0-2', link: '',
+    type: 'Bespoke/Custom', budget: '5m-25m', timeline: 'planning', expectedScore: 40
+  },
+  {
+    name: 'David Chen', email: 'dchen@chenholdings.io', phone: '555-0899', fb: 'DavidChen',
+    job: 'Managing Director', company: 'Chen Holdings', years: '3-5', link: 'https://linkedin.com/in/dchen',
+    type: 'Residential', budget: '250m+', timeline: 'planning', expectedScore: 75
+  },
+  {
+    name: 'Sarah Jenkins', email: 's.jenkins@retailgroup.com', phone: '555-0991', fb: 'SaraJ',
+    job: 'Expansion Lead', company: 'Retail Group', years: '5-10', link: '',
+    type: 'Commercial', budget: '25m-50m', timeline: 'immediately', expectedScore: 80
+  }
+];
+
 test.describe('Alpton Construction E2E Flow', () => {
-  test('User can submit a wizard inquiry and admin can review it', async ({ page }) => {
-    // 1. Visit Landing Page
-    await page.goto('/');
+  test('User can submit 5 wizard inquiries of varying quality and admin can review them in local currency', async ({ page }) => {
     
-    // 2. Open Wizard (Click the visible CTA in the Hero)
-    await page.getByRole('button', { name: 'Request a Consultation' }).click();
-    await expect(page.getByText('Contact Information')).toBeVisible();
+    // Visit Landing Page
+    await page.goto('/');
 
-    // 3. Step 1: Contact Form
-    await page.locator('input[name="full_name"]').fill('Isabella Sterling');
-    await page.locator('input[name="email"]').fill('isabella@sterling.com');
-    await page.locator('input[name="phone"]').fill('555-0199');
-    await page.locator('input[name="facebook_account"]').fill('IsabellaS');
-    await page.getByRole('button', { name: 'Continue' }).click();
+    for (const lead of testLeads) {
+      // Open Wizard
+      await page.getByTestId('cta-hero').click();
+      await expect(page.getByText('Contact Information')).toBeVisible();
 
-    // 4. Step 2: Affiliation Form
-    await expect(page.getByText('Professional Affiliation')).toBeVisible();
-    await page.locator('input[name="affiliation_job"]').fill('Executive Architect');
-    await page.locator('input[name="affiliation_company"]').fill('Sterling Design');
-    await page.locator('select[name="affiliation_years"]').selectOption('5-10');
-    await page.locator('input[name="linkedin_url"]').fill('https://linkedin.com/in/isabellasterling');
-    await page.getByRole('button', { name: 'Continue' }).click();
+      // Step 1
+      await page.getByTestId('wizard-input-full_name').fill(lead.name);
+      await page.getByTestId('wizard-input-email').fill(lead.email);
+      await page.getByTestId('wizard-input-phone').fill(lead.phone);
+      await page.getByTestId('wizard-input-facebook_account').fill(lead.fb);
+      await page.getByTestId('wizard-btn-continue').click();
 
-    // 5. Step 3: Project Details
-    await expect(page.getByText('Project Parameters')).toBeVisible();
-    await page.getByRole('button', { name: 'Commercial' }).click();
-    await page.locator('select[name="budget"]').selectOption('5m+');
-    await page.locator('select[name="timeline"]').selectOption('immediately');
-    await page.getByRole('button', { name: 'Submit Inquiry' }).click();
+      // Step 2
+      await expect(page.getByText('Professional Affiliation')).toBeVisible();
+      await page.getByTestId('wizard-input-affiliation_job').fill(lead.job);
+      await page.getByTestId('wizard-input-affiliation_company').fill(lead.company);
+      await page.getByTestId('wizard-select-affiliation_years').selectOption(lead.years);
+      await page.getByTestId('wizard-input-linkedin_url').fill(lead.link);
+      await page.getByTestId('wizard-btn-continue').click();
 
-    // 6. Success Step
-    await expect(page.getByText('Request Received.')).toBeVisible();
-    await page.getByRole('button', { name: 'Close Window' }).click();
-    await expect(page.getByText('Contact Information')).not.toBeVisible();
+      // Step 3
+      await expect(page.getByText('Project Parameters')).toBeVisible();
+      await page.getByTestId(`wizard-btn-${lead.type.toLowerCase().split('/')[0]}`).click();
+      await page.getByTestId('wizard-select-budget').selectOption(lead.budget);
+      await page.getByTestId('wizard-select-timeline').selectOption(lead.timeline);
+      await page.getByTestId('wizard-btn-submit').click();
 
-    // 7. Verify Admin Leads Dashboard
-    await page.goto('/admin/leads');
+      // Success Step
+      await expect(page.getByText('Request Received.')).toBeVisible();
+      await page.getByTestId('wizard-btn-close').click();
+      await expect(page.getByText('Contact Information')).not.toBeVisible();
+    }
+
+    // Verify Admin Leads Dashboard
+    await page.getByTestId('link-admin').click();
     await expect(page.getByRole('heading', { name: 'Lead Control Center' })).toBeVisible();
     
-    // Check if the lead is in the table
-    const tableRow = page.locator('tr').filter({ hasText: 'Isabella Sterling' });
-    await expect(tableRow).toBeVisible();
+    // Check all 5 leads
+    for (const lead of testLeads) {
+      const leadId = lead.name.replace(/\s+/g, '-').toLowerCase();
+      const tableRow = page.getByTestId(`lead-row-${leadId}`);
+      await expect(tableRow).toBeVisible();
+      await expect(tableRow.getByTestId('col-score')).toContainText(lead.expectedScore.toString());
+      await expect(tableRow.getByTestId('col-valuation')).toContainText('Pending Evaluation');
+      await expect(tableRow.getByTestId('col-status')).toContainText('New');
+    }
     
-    // Verify high qualification score calculation (should be 100)
-    // 30 base + 40 (5m+ budget) + 15 (Commercial type) + 15 (immediately timeline) + 5 (linkedin url) = 100
-    await expect(tableRow).toContainText('100');
+    // Check KPI - 2 high tier qualified (Isabella 100, Sarah 80)
+    await expect(page.locator('text=High-Tier Qualified').locator('..').locator('h3')).toContainText('2');
     
-    // Verify initial values
-    await expect(tableRow).toContainText('Pending Evaluation'); // valuation
-    await expect(tableRow).toContainText('New'); // status
+    // Total Leads - 5
+    await expect(page.locator('text=Gross Leads').locator('..').locator('h3')).toContainText('5');
   });
 });

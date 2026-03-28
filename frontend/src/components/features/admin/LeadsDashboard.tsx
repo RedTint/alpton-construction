@@ -19,7 +19,7 @@ export const LeadsDashboard: React.FC = () => {
   // Mock total booked value based on 'Negotiation' or high quality
   const mockTotalBookedValue = leads.reduce((acc, lead) => {
     if (lead.valuation && lead.valuation !== 'Pending Evaluation') {
-      const val = parseFloat(lead.valuation.replace('$', '').replace('M', '')) || 0;
+      const val = parseFloat(lead.valuation.replace('₱', '').replace('M', '')) || 0;
       return acc + val;
     }
     return acc;
@@ -86,7 +86,7 @@ export const LeadsDashboard: React.FC = () => {
             <div className="p-8 border-r border-white/5 bg-primary relative overflow-hidden group">
               <div className="relative z-10">
                 <p className="text-secondary text-[10px] font-bold tracking-[0.3em] uppercase mb-4">Total Asset Valuation</p>
-                <h3 className="text-4xl font-black text-white tracking-tighter">${mockTotalBookedValue}M</h3>
+                <h3 className="text-4xl font-black text-white tracking-tighter">₱{mockTotalBookedValue}M</h3>
                 <p className="text-slate-400 text-xs mt-2">Active Pipeline</p>
               </div>
               <span className="absolute bottom-[-10px] right-[-10px] text-[100px] font-black text-secondary/5 leading-none select-none">VAL</span>
@@ -144,7 +144,7 @@ export const LeadsDashboard: React.FC = () => {
                 </thead>
                 <tbody className="divide-y divide-surface-container-highest">
                   {visibleLeads.map((lead) => (
-                    <tr key={lead.id} className="hover:bg-surface transition-colors group">
+                    <tr key={lead.id} data-testid={`lead-row-${lead.full_name?.replace(/\s+/g, '-').toLowerCase()}`} className="hover:bg-surface transition-colors group">
                       <td className="px-8 py-6">
                         <div className="flex items-center gap-4">
                           <div className={`shrink-0 w-10 h-10 flex items-center justify-center text-xs font-bold ${lead.status === 'New' ? 'bg-secondary text-on-secondary' : 'bg-primary text-white'}`}>
@@ -159,7 +159,7 @@ export const LeadsDashboard: React.FC = () => {
                           </div>
                         </div>
                       </td>
-                      <td className="px-8 py-6">
+                      <td className="px-8 py-6" data-testid="col-score">
                         <div className="flex items-center gap-2">
                           <span className={`text-sm font-black ${lead.qualificationScore >= 80 ? 'text-secondary' : lead.qualificationScore >= 50 ? 'text-primary' : 'text-outline'}`}>
                             {lead.qualificationScore}
@@ -172,10 +172,10 @@ export const LeadsDashboard: React.FC = () => {
                       <td className="px-8 py-6">
                         <span className="text-xs font-bold text-on-surface-variant uppercase tracking-wider">{lead.project_type || 'Unspecified'}</span>
                       </td>
-                      <td className="px-8 py-6">
+                      <td className="px-8 py-6" data-testid="col-valuation">
                         <span className="text-sm font-bold text-primary">{lead.valuation}</span>
                       </td>
-                      <td className="px-8 py-6 text-right">
+                      <td className="px-8 py-6 text-right" data-testid="col-status">
                         <span className={`inline-block px-3 py-1 text-[9px] font-black uppercase tracking-widest ${
                           lead.status === 'New' ? 'bg-secondary text-on-secondary shadow-sm' : 
                           lead.status === 'Under Review' ? 'bg-primary text-white' : 
