@@ -1,0 +1,36 @@
+{
+    "model": "claude-sonnet-4-6",
+    "maxTokens": 8192,
+    "autoUpdatesChannel": "stable",
+    "permissions": {
+        "allowedTools": [
+            "Read",
+            "Write",
+            "Edit",
+            "Bash",
+            "Glob",
+            "Grep"
+        ],
+        "deny": [
+            "Read(./.env)",
+            "Read(./.env.*)",
+            "Write(./production.config.*)"
+        ]
+    },
+    "hooks": {
+        "PostToolUse": [
+            {
+                "matcher": "Write(*.py)",
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": "python -m black $file"
+                    }
+                ]
+            }
+        ]
+    },
+    "env": {
+        "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+    }
+}

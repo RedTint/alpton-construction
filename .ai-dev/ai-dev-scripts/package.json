@@ -1,0 +1,15 @@
+{
+  "name": "ai-dev-scripts",
+  "version": "1.0.0",
+  "description": "Project management scripts for AI Dev Agency — reads docs/epics/ and aggregates stats",
+  "private": true,
+  "scripts": {
+    "aggregate": "node aggregate-epics.js",
+    "aggregate:update": "node aggregate-epics.js --update",
+    "aggregate:table": "node aggregate-epics.js --output=table",
+    "test": "node --test --test-reporter=spec aggregate-epics.test.js"
+  },
+  "dependencies": {
+    "gray-matter": "^4.0.3"
+  }
+}

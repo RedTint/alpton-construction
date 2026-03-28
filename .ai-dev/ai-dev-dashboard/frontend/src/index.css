@@ -1,0 +1,207 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 222 47% 6%;
+    --foreground: 210 40% 96%;
+    --card: 222 47% 9%;
+    --card-foreground: 210 40% 96%;
+    --primary: 217 91% 60%;
+    --primary-foreground: 222 47% 6%;
+    --secondary: 217 33% 17%;
+    --secondary-foreground: 210 40% 96%;
+    --muted: 217 33% 14%;
+    --muted-foreground: 215 20% 55%;
+    --accent: 217 33% 17%;
+    --accent-foreground: 210 40% 96%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 96%;
+    --border: 217 33% 17%;
+    --input: 217 33% 17%;
+    --ring: 217 91% 60%;
+    --radius: 0.625rem;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--muted));
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted-foreground) / 0.3);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground) / 0.5);
+}
+
+/* Glass effect utility */
+.glass {
+  background: hsl(var(--card) / 0.6);
+  backdrop-filter: blur(12px);
+  border: 1px solid hsl(var(--border) / 0.5);
+}
+
+/* Gradient text */
+.gradient-text {
+  background: linear-gradient(135deg, hsl(217 91% 60%), hsl(271 91% 65%), hsl(322 84% 60%));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Glow effects */
+.glow-primary {
+  box-shadow: 0 0 20px hsl(217 91% 60% / 0.15), 0 0 40px hsl(217 91% 60% / 0.05);
+}
+
+.glow-success {
+  box-shadow: 0 0 20px hsl(142 76% 36% / 0.15), 0 0 40px hsl(142 76% 36% / 0.05);
+}
+
+/* Skeleton animation */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    hsl(var(--muted)) 25%,
+    hsl(var(--muted-foreground) / 0.08) 37%,
+    hsl(var(--muted)) 63%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+/* ── Prose dark overrides for docs viewer ── */
+.prose {
+  --tw-prose-body: hsl(var(--foreground));
+  --tw-prose-headings: hsl(var(--foreground));
+  --tw-prose-lead: hsl(var(--muted-foreground));
+  --tw-prose-links: hsl(var(--primary));
+  --tw-prose-bold: hsl(var(--foreground));
+  --tw-prose-counters: hsl(var(--muted-foreground));
+  --tw-prose-bullets: hsl(var(--muted-foreground));
+  --tw-prose-hr: hsl(var(--border));
+  --tw-prose-quotes: hsl(var(--foreground));
+  --tw-prose-quote-borders: hsl(var(--primary) / 0.4);
+  --tw-prose-captions: hsl(var(--muted-foreground));
+  --tw-prose-code: hsl(var(--primary));
+  --tw-prose-pre-code: hsl(210 40% 90%);
+  --tw-prose-pre-bg: hsl(222 47% 7%);
+  --tw-prose-th-borders: hsl(var(--border));
+  --tw-prose-td-borders: hsl(var(--border));
+}
+
+.prose h1 {
+  @apply text-2xl font-bold bg-gradient-to-r from-blue-400 to-violet-400 bg-clip-text text-transparent pb-2 border-b border-border;
+}
+
+.prose h2 {
+  @apply text-xl font-bold text-foreground mt-8 mb-4 pb-1 border-b border-border/50;
+}
+
+.prose h3 {
+  @apply text-lg font-semibold text-foreground mt-6 mb-3;
+}
+
+.prose h4 {
+  @apply text-base font-semibold text-foreground mt-4 mb-2;
+}
+
+.prose a {
+  @apply text-primary hover:underline decoration-primary/50 transition-colors;
+}
+
+.prose code:not(pre code) {
+  @apply px-1.5 py-0.5 rounded-md bg-secondary text-primary text-[0.85em] font-medium;
+}
+
+.prose code::before,
+.prose code::after {
+  content: none;
+}
+
+.prose pre {
+  @apply rounded-xl bg-[hsl(222,47%,7%)] border border-border/50 p-4 overflow-x-auto;
+}
+
+.prose pre code {
+  @apply text-[13px] leading-relaxed;
+}
+
+.prose blockquote {
+  @apply border-l-2 border-primary/40 pl-4 italic text-muted-foreground not-italic;
+}
+
+.prose table {
+  @apply w-full border-collapse;
+}
+
+.prose thead th {
+  @apply text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground bg-secondary/50 px-3 py-2 border-b border-border;
+}
+
+.prose tbody td {
+  @apply px-3 py-2 text-sm border-b border-border/50;
+}
+
+.prose tbody tr:hover {
+  @apply bg-secondary/30;
+}
+
+.prose ul {
+  @apply list-disc pl-5 space-y-1;
+}
+
+.prose ol {
+  @apply list-decimal pl-5 space-y-1;
+}
+
+.prose li {
+  @apply text-foreground/90;
+}
+
+.prose img {
+  @apply rounded-xl border border-border;
+}
+
+.prose hr {
+  @apply border-border my-8;
+}
+
+.prose strong {
+  @apply font-bold text-foreground;
+}
+
+/* Mermaid diagrams */
+.mermaid-container {
+  @apply rounded-xl border border-border bg-card/50 p-4 my-4 overflow-x-auto;
+}
+
+.mermaid-container svg {
+  @apply max-w-full mx-auto;
+}
+

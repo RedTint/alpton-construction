@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: ai-dev-dashboard-backend
+    ports:
+      - '3002:3002'
+    environment:
+      - PORT=3002
+      - FRONTEND_URL=http://localhost:3001
+      - DOCS_PATH=/app/docs
+    volumes:
+      - ./backend/src:/app/src
+      - ../docs:/app/docs:ro
+    networks:
+      - ai-dev-network
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://localhost:3002/health']
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: ai-dev-dashboard-frontend
+    ports:
+      - '3001:3000'
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:3002
+    volumes:
+      - ./frontend/src:/app/src
+    networks:
+      - ai-dev-network
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+
+networks:
+  ai-dev-network:
+    driver: bridge

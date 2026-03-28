@@ -1,0 +1,88 @@
+{
+  "metadata": {
+    "generated_at": "2026-02-19T00:00:00Z",
+    "atomic_stories_version": "v1.4.0",
+    "progress_version": "v1.3.0",
+    "total_stories": 3,
+    "overall_completion_pct": 67
+  },
+  "stories": [
+    {
+      "id": "001",
+      "title": "Project Setup Command",
+      "description": "Initialize project files",
+      "status": "completed",
+      "priority": "high",
+      "effort": 3,
+      "version": "v1.0.0",
+      "category": "MVP",
+      "dependencies": [],
+      "uacs": [],
+      "notes": ""
+    },
+    {
+      "id": "002",
+      "title": "Define Command",
+      "description": "Define documentation files",
+      "status": "completed",
+      "priority": "high",
+      "effort": 5,
+      "version": "v1.0.0",
+      "category": "MVP",
+      "dependencies": [],
+      "uacs": [],
+      "notes": ""
+    },
+    {
+      "id": "318",
+      "title": "Project Dashboard",
+      "description": "Visual dashboard for project",
+      "status": "pending",
+      "priority": "high",
+      "effort": 21,
+      "version": "v1.4.0",
+      "category": "Business Intelligence",
+      "dependencies": ["001", "002"],
+      "uacs": [
+        { "tag": "BE", "description": "NestJS API", "status": "pending" }
+      ],
+      "notes": "Depends on /sync-board"
+    }
+  ],
+  "releases": [
+    {
+      "version": "v1.0.0",
+      "name": "MVP",
+      "released_at": "2026-02-06",
+      "stories": ["001", "002"],
+      "key_achievements": [
+        "Complete documentation system",
+        "Claude Code integration"
+      ]
+    }
+  ],
+  "metrics": {
+    "total_stories": 3,
+    "completed": 2,
+    "in_progress": 0,
+    "pending": 1,
+    "blocked": 0,
+    "completion_pct": 67,
+    "total_points_completed": 8,
+    "total_points_remaining": 21,
+    "points_by_version": {
+      "v1.0.0": { "completed": 8, "total": 8, "pct": 100 },
+      "v1.4.0": { "completed": 0, "total": 21, "pct": 0 }
+    },
+    "velocity_per_sprint": 30,
+    "estimated_remaining_sprints": 1,
+    "suggestions": [
+      {
+        "type": "available",
+        "priority": "high",
+        "title": "Story 318 is ready to start",
+        "detail": "No unmet dependencies"
+      }
+    ]
+  }
+}
