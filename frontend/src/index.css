@@ -1,0 +1,28 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=Inter:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-surface font-body text-on-surface antialiased;
+  }
+}
+
+@layer utilities {
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    vertical-align: middle;
+  }
+  .structural-gradient {
+    @apply bg-gradient-to-br from-[#162839] to-[#2c3e50];
+  }
+  .architectural-blur {
+    @apply backdrop-blur-[12px];
+    -webkit-backdrop-filter: blur(12px);
+  }
+  .no-line-rule { border: none !important; }
+  .tonal-shift-only { box-shadow: none; border: none; }
+}

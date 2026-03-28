@@ -10,10 +10,10 @@
 
 | Story ID | Title | Priority | Status | Description |
 |----------|-------|----------|--------|-------------|
-| 001-001 | Initialize React SPA & Tailwind Setup | Critical | ⏳ Pending | Set up Vite, React Router, and TailwindCSS matching the "Architectural Monolith" design tokens. |
-| 001-002 | Build Public Landing & Services Pages | High | ⏳ Pending | Implement the static hero section, company profile, and services layout using standard UI components. |
-| 001-003 | Integrate lightgalleryjs Portfolio | High | ⏳ Pending | Build the masonry portfolio grid components and wire up `lightgalleryjs` for full-screen viewing. |
-| 001-004 | Implement Inquiry Wizard UI & Form State | Critical | ⏳ Pending | Build the interactive multi-step form for the "BUILD NOW, PAY LATER" qualification process. |
+| 001-001 | Initialize React SPA & Tailwind Setup | Critical | ✅ Done | Set up Vite, React Router, and TailwindCSS matching the "Architectural Monolith" design tokens. |
+| 001-002 | Build Public Landing & Services Pages | High | ✅ Done | Implement the static hero section, company profile, and services layout using standard UI components. |
+| 001-003 | Integrate lightgalleryjs Portfolio | High | ✅ Done | Build the masonry portfolio grid components and wire up `lightgalleryjs` for full-screen viewing. |
+| 001-004 | Implement Inquiry Wizard UI & Form State | Critical | 🏃 In Progress | Build the interactive multi-step form for the "BUILD NOW, PAY LATER" qualification process. |
 | 001-005 | Capture Facebook Agent Attribution | High | ⏳ Pending | Parse `?agent=` URL parameter on initial load and persist it in Zustand/SessionStorage to map to submissions. |
 
 ## Epic 002: Backend Services & Admin Portal

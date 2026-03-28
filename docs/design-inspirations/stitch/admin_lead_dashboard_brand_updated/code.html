@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ALFTON ADMIN | Lead Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-secondary-fixed-variant": "#5d4201",
+                        "secondary-container": "#fed488",
+                        "primary-fixed-dim": "#b6c7e9",
+                        "on-tertiary-fixed-variant": "#5f4020",
+                        "on-secondary-fixed": "#261900",
+                        "on-tertiary-container": "#a57e59",
+                        "tertiary-fixed-dim": "#ecbe95",
+                        "secondary": "#775a19",
+                        "surface-container-highest": "#e2e2e5",
+                        "inverse-surface": "#2f3133",
+                        "surface-bright": "#f9f9fc",
+                        "on-primary-fixed-variant": "#364763",
+                        "secondary-fixed": "#ffdea5",
+                        "on-tertiary-fixed": "#2d1600",
+                        "on-primary": "#ffffff",
+                        "surface-dim": "#dadadc",
+                        "on-primary-container": "#7586a6",
+                        "secondary-fixed-dim": "#e9c176",
+                        "on-surface": "#1a1c1e",
+                        "surface-tint": "#4e5f7c",
+                        "inverse-primary": "#b6c7e9",
+                        "on-error": "#ffffff",
+                        "tertiary": "#0a0300",
+                        "outline-variant": "#c5c6ce",
+                        "error": "#ba1a1a",
+                        "outline": "#75777e",
+                        "on-error-container": "#93000a",
+                        "surface-container": "#eeeef0",
+                        "on-primary-fixed": "#081c36",
+                        "inverse-on-surface": "#f0f0f3",
+                        "surface-variant": "#e2e2e5",
+                        "primary-container": "#0b1e38",
+                        "on-tertiary": "#ffffff",
+                        "primary": "#000410",
+                        "tertiary-fixed": "#ffdcbf",
+                        "background": "#f9f9fc",
+                        "on-background": "#1a1c1e",
+                        "surface-container-high": "#e8e8ea",
+                        "on-surface-variant": "#44474d",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#f3f3f6",
+                        "tertiary-container": "#301800",
+                        "primary-fixed": "#d6e3ff",
+                        "surface": "#f9f9fc",
+                        "error-container": "#ffdad6",
+                        "on-secondary-container": "#785a1a",
+                        "on-secondary": "#ffffff"
+                    },
+                    fontFamily: {
+                        "headline": ["Manrope", "sans-serif"],
+                        "body": ["Manrope", "sans-serif"],
+                        "label": ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0px", "lg": "0px", "xl": "0px", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .monolith-watermark {
+            position: absolute;
+            bottom: -20px;
+            right: -20px;
+            font-size: 120px;
+            font-weight: 900;
+            color: rgba(119, 90, 25, 0.05);
+            pointer-events: none;
+            user-select: none;
+            z-index: 0;
+            line-height: 1;
+        }
+    </style>
+</head>
+<body class="bg-background font-body text-on-background selection:bg-secondary/30">
+<!-- SideNavBar (Authority: JSON) -->
+<nav class="h-screen w-64 fixed left-0 top-0 bg-[#000410] flex flex-col p-6 z-50">
+<div class="text-white mb-10">
+<div class="text-lg font-bold tracking-tighter">ALFTON ADMIN</div>
+<div class="font-['Manrope'] uppercase tracking-widest text-[10px] font-bold text-[#775a19]">Project Controller</div>
+</div>
+<div class="flex-grow space-y-2">
+<!-- Dashboard (Active) -->
+<a class="flex items-center gap-4 px-4 py-3 bg-[#0b1e38] text-[#775a19] border-r-4 border-[#775a19] transition-all duration-200" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-['Manrope'] uppercase tracking-widest text-[10px] font-bold">Dashboard</span>
+</a>
+<!-- Inventory -->
+<a class="flex items-center gap-4 px-4 py-3 text-slate-400 hover:text-white hover:bg-[#0b1e38] transition-all duration-200" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-['Manrope'] uppercase tracking-widest text-[10px] font-bold">Inventory</span>
+</a>
+<!-- Site Management -->
+<a class="flex items-center gap-4 px-4 py-3 text-slate-400 hover:text-white hover:bg-[#0b1e38] transition-all duration-200" href="#">
+<span class="material-symbols-outlined">architecture</span>
+<span class="font-['Manrope'] uppercase tracking-widest text-[10px] font-bold">Site Management</span>
+</a>
+<!-- Financials -->
+<a class="flex items-center gap-4 px-4 py-3 text-slate-400 hover:text-white hover:bg-[#0b1e38] transition-all duration-200" href="#">
+<span class="material-symbols-outlined">payments</span>
+<span class="font-['Manrope'] uppercase tracking-widest text-[10px] font-bold">Financials</span>
+</a>
+<!-- Settings -->
+<a class="flex items-center gap-4 px-4 py-3 text-slate-400 hover:text-white hover:bg-[#0b1e38] transition-all duration-200" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-['Manrope'] uppercase tracking-widest text-[10px] font-bold">Settings</span>
+</a>
+</div>
+<div class="mt-auto pt-8">
+<button class="w-full bg-secondary text-white py-4 font-['Manrope'] uppercase tracking-widest text-[10px] font-bold hover:bg-[#8e6b1e] transition-colors">
+                NEW PROJECT
+            </button>
+<div class="flex items-center gap-3 mt-8 px-2">
+<img class="w-10 h-10 object-cover grayscale brightness-75 border border-secondary/20" data-alt="portrait of a professional architect in dark suit with serious expression" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCsqj55bdKbx8tjhKlKqE4FceMnBOzVByZXeK9SDp4yK-oy-xnIfUAo_qE7BmbPWA3O_8m4XBeCNzlPUdoT3isv5-KtwgJQBjNuKhDPo_nCVemFI8H9fIsHSqL_vmALMjqBUfgTdI4nfNrur5pB0cDZVio8GtlDcfMUlTmTSEdq2GQ2-_m02OULvIrYIJ04xH_NAI0VwVbcLvN9kQpXS7Itbqc2cS8fF41VrRgJJr-nK4qdD1Tg5mRkEB38VAQ0dZIyrzKluZ2pIRg"/>
+<div>
+<p class="text-[10px] font-bold text-white uppercase tracking-tighter">Admin User Profile</p>
+<p class="text-[9px] text-slate-500 uppercase tracking-widest">Global Access</p>
+</div>
+</div>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="ml-64 min-h-screen">
+<!-- TopAppBar (Authority: JSON/Design System) -->
+<header class="sticky top-0 w-full z-40 bg-white/70 backdrop-blur-xl flex justify-between items-center px-12 py-8 transition-all">
+<h1 class="text-2xl font-black tracking-tighter text-[#000410]">Lead Control Center</h1>
+<div class="flex gap-8 items-center">
+<div class="flex flex-col items-end">
+<span class="text-[10px] font-bold tracking-[0.2em] text-secondary uppercase">Market Status</span>
+<span class="text-sm font-semibold text-primary">Bullish Evolution</span>
+</div>
+<div class="h-8 w-[1px] bg-outline-variant/30"></div>
+<button class="bg-primary text-white px-6 py-3 font-['Manrope'] text-[10px] font-extrabold tracking-widest uppercase hover:bg-primary-container transition-all">
+                    BUILD NOW, PAY LATER
+                </button>
+</div>
+</header>
+<div class="px-12 py-12 space-y-16">
+<!-- Key Metrics (Bento Style) -->
+<section class="grid grid-cols-1 md:grid-cols-4 gap-0 bg-primary-container overflow-hidden shadow-[0_40px_80px_-20px_rgba(0,4,16,0.12)]">
+<div class="p-8 border-r border-white/5 bg-primary relative overflow-hidden group">
+<div class="relative z-10">
+<p class="text-secondary text-[10px] font-bold tracking-[0.3em] uppercase mb-4">Total Asset Valuation</p>
+<h3 class="text-4xl font-black text-white tracking-tighter">$428.5M</h3>
+<p class="text-slate-400 text-xs mt-2">+12.4% from Q3</p>
+</div>
+<span class="monolith-watermark">VAL</span>
+</div>
+<div class="p-8 border-r border-white/5 bg-primary relative overflow-hidden group">
+<div class="relative z-10">
+<p class="text-secondary text-[10px] font-bold tracking-[0.3em] uppercase mb-4">Active Leads</p>
+<h3 class="text-4xl font-black text-white tracking-tighter">842</h3>
+<p class="text-slate-400 text-xs mt-2">18 High-Priority</p>
+</div>
+<span class="monolith-watermark">LD</span>
+</div>
+<div class="p-8 border-r border-white/5 bg-primary relative overflow-hidden group">
+<div class="relative z-10">
+<p class="text-secondary text-[10px] font-bold tracking-[0.3em] uppercase mb-4">Conversion Rate</p>
+<h3 class="text-4xl font-black text-white tracking-tighter">24.2%</h3>
+<p class="text-slate-400 text-xs mt-2">Sector Leading</p>
+</div>
+<span class="monolith-watermark">CON</span>
+</div>
+<div class="p-8 bg-primary relative overflow-hidden group">
+<div class="relative z-10">
+<p class="text-secondary text-[10px] font-bold tracking-[0.3em] uppercase mb-4">Pipeline Velocity</p>
+<h3 class="text-4xl font-black text-white tracking-tighter">4.8d</h3>
+<p class="text-slate-400 text-xs mt-2">Optimal Flow</p>
+</div>
+<span class="monolith-watermark">VEL</span>
+</div>
+</section>
+<!-- Lead Pipeline Table -->
+<section class="space-y-6">
+<div class="flex justify-between items-end border-b border-outline-variant/20 pb-4">
+<div>
+<h2 class="text-3xl font-black tracking-tighter text-primary">LEADS PIPELINE</h2>
+<p class="text-xs text-secondary font-bold tracking-widest uppercase">Active Acquisition Tracking</p>
+</div>
+<div class="flex gap-4">
+<button class="px-4 py-2 text-[10px] font-bold tracking-widest border-b-2 border-primary">ALL LEADS</button>
+<button class="px-4 py-2 text-[10px] font-bold tracking-widest text-outline hover:text-primary transition-colors">COMMERCIAL</button>
+<button class="px-4 py-2 text-[10px] font-bold tracking-widest text-outline hover:text-primary transition-colors">RESIDENTIAL</button>
+</div>
+</div>
+<div class="bg-surface-container-lowest overflow-hidden">
+<table class="w-full text-left">
+<thead class="bg-surface-container-low border-b border-outline-variant/10">
+<tr>
+<th class="px-8 py-5 text-[10px] font-black uppercase tracking-widest text-primary">Lead Identity</th>
+<th class="px-8 py-5 text-[10px] font-black uppercase tracking-widest text-primary">Asset Scope</th>
+<th class="px-8 py-5 text-[10px] font-black uppercase tracking-widest text-primary">Valuation</th>
+<th class="px-8 py-5 text-[10px] font-black uppercase tracking-widest text-primary">Status</th>
+<th class="px-8 py-5 text-right text-[10px] font-black uppercase tracking-widest text-primary">Control</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/5">
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-8 py-6">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 bg-primary flex items-center justify-center text-white text-xs font-bold">OC</div>
+<div>
+<p class="text-sm font-bold text-primary">The Obsidian Complex</p>
+<p class="text-[10px] text-outline uppercase tracking-tight">London SE1 • High Net Worth</p>
+</div>
+</div>
+</td>
+<td class="px-8 py-6">
+<span class="text-xs font-medium text-on-surface-variant">Multi-Unit Luxury Residence</span>
+</td>
+<td class="px-8 py-6">
+<span class="text-sm font-bold text-primary">$12.5M</span>
+</td>
+<td class="px-8 py-6">
+<span class="inline-block px-3 py-1 bg-secondary-container text-on-secondary-container text-[9px] font-black uppercase tracking-widest">Under Review</span>
+</td>
+<td class="px-8 py-6 text-right">
+<button class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">more_vert</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-8 py-6">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 bg-secondary flex items-center justify-center text-white text-xs font-bold">AV</div>
+<div>
+<p class="text-sm font-bold text-primary">Azure Vista Headquarters</p>
+<p class="text-[10px] text-outline uppercase tracking-tight">Dubai Marina • Corporate</p>
+</div>
+</div>
+</td>
+<td class="px-8 py-6">
+<span class="text-xs font-medium text-on-surface-variant">Tier 1 Office Monolith</span>
+</td>
+<td class="px-8 py-6">
+<span class="text-sm font-bold text-primary">$84.2M</span>
+</td>
+<td class="px-8 py-6">
+<span class="inline-block px-3 py-1 bg-primary text-white text-[9px] font-black uppercase tracking-widest">Negotiation</span>
+</td>
+<td class="px-8 py-6 text-right">
+<button class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">more_vert</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-8 py-6">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 bg-slate-200 flex items-center justify-center text-primary text-xs font-bold">SH</div>
+<div>
+<p class="text-sm font-bold text-primary">Sterling Heights Estate</p>
+<p class="text-[10px] text-outline uppercase tracking-tight">New York NY • Private Wealth</p>
+</div>
+</div>
+</td>
+<td class="px-8 py-6">
+<span class="text-xs font-medium text-on-surface-variant">Private Architectural Enclave</span>
+</td>
+<td class="px-8 py-6">
+<span class="text-sm font-bold text-primary">$28.9M</span>
+</td>
+<td class="px-8 py-6">
+<span class="inline-block px-3 py-1 bg-surface-container-high text-on-surface-variant text-[9px] font-black uppercase tracking-widest">Cold Prospect</span>
+</td>
+<td class="px-8 py-6 text-right">
+<button class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">more_vert</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- Portfolio Asset Deployment (Asymmetric Layout) -->
+<section class="grid grid-cols-12 gap-8 items-start">
+<div class="col-span-12 lg:col-span-5 space-y-8">
+<div class="relative group overflow-hidden bg-primary p-12 aspect-[4/5] flex flex-col justify-end">
+<img class="absolute inset-0 w-full h-full object-cover opacity-60 grayscale group-hover:scale-105 transition-transform duration-700" data-alt="monolithic modern skyscraper with dark glass and concrete textures against a clear sky" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJhkHVb9FUhyVnv_gGVQNmqxUIoNewoBVbBPuP8Rk5tOIdvLQMEKR2QnJdXLIzSkRWl0geSHk9O5SXH5Sr7MjwPEt3ctTHJuDeXmUAxf7nv51b018U4J-EdtSEFU58SwU-PGueNZK6c172ZpsuN0YucetsWjvqCJtwWj2AfW0G2fFMD1LYolrublSGLxKJap_WCAB-MWegfkF1lTOTiXi_Oey3IocOV4E_OGQQKKQC_LdtJVLpOhj7Xg1H6pUcZZJw62pJeFHyJVw"/>
+<div class="absolute inset-0 bg-gradient-to-t from-primary via-primary/20 to-transparent"></div>
+<div class="relative z-10">
+<span class="text-secondary text-[10px] font-bold tracking-[0.4em] uppercase mb-4 block">Deployment Spotlight</span>
+<h3 class="text-5xl font-black text-white tracking-tighter leading-none mb-6">THE TITAN<br/>STRUCTURE</h3>
+<p class="text-slate-300 text-sm max-w-xs mb-8">Architectural integration of modular steel and carbon fiber reinforced concrete in Neo-Brutalist form.</p>
+<button class="bg-secondary text-white px-8 py-4 text-[10px] font-black tracking-widest uppercase hover:bg-white hover:text-primary transition-all">VIEW CASE STUDY</button>
+</div>
+<span class="monolith-watermark" style="bottom: 20px; right: 20px;">DEPLOY</span>
+</div>
+</div>
+<div class="col-span-12 lg:col-span-7 space-y-12 pl-0 lg:pl-12">
+<div>
+<h2 class="text-3xl font-black tracking-tighter text-primary">PORTFOLIO DEPLOYMENT</h2>
+<p class="text-xs text-secondary font-bold tracking-widest uppercase mt-2">Asset Allocation Hierarchy</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<!-- Asset Card 1 -->
+<div class="bg-surface-container-low p-8 relative overflow-hidden">
+<div class="relative z-10">
+<p class="text-primary text-[10px] font-black tracking-widest uppercase mb-6 flex justify-between">
+<span>Asset ID: ALP-001</span>
+<span class="text-secondary">Deployed</span>
+</p>
+<h4 class="text-2xl font-black tracking-tight text-primary mb-4">Metropolitan Hub</h4>
+<div class="space-y-4 mb-8">
+<div class="flex justify-between text-xs border-b border-outline-variant/10 pb-2">
+<span class="text-outline">Infrastructure</span>
+<span class="font-bold">Tier 1 Commercial</span>
+</div>
+<div class="flex justify-between text-xs border-b border-outline-variant/10 pb-2">
+<span class="text-outline">Utilization</span>
+<span class="font-bold">98.4%</span>
+</div>
+<div class="flex justify-between text-xs">
+<span class="text-outline">Yield</span>
+<span class="font-bold text-secondary">14.2% APY</span>
+</div>
+</div>
+<div class="w-full h-1 bg-outline-variant/20">
+<div class="w-full h-full bg-secondary"></div>
+</div>
+</div>
+</div>
+<!-- Asset Card 2 -->
+<div class="bg-surface-container-low p-8 relative overflow-hidden">
+<div class="relative z-10">
+<p class="text-primary text-[10px] font-black tracking-widest uppercase mb-6 flex justify-between">
+<span>Asset ID: ALP-084</span>
+<span class="text-outline">Pending</span>
+</p>
+<h4 class="text-2xl font-black tracking-tight text-primary mb-4">Vector Residences</h4>
+<div class="space-y-4 mb-8">
+<div class="flex justify-between text-xs border-b border-outline-variant/10 pb-2">
+<span class="text-outline">Infrastructure</span>
+<span class="font-bold">High-Density Res</span>
+</div>
+<div class="flex justify-between text-xs border-b border-outline-variant/10 pb-2">
+<span class="text-outline">Utilization</span>
+<span class="font-bold">62.0%</span>
+</div>
+<div class="flex justify-between text-xs">
+<span class="text-outline">Yield</span>
+<span class="font-bold text-secondary">Projected 9.8%</span>
+</div>
+</div>
+<div class="w-full h-1 bg-outline-variant/20">
+<div class="w-[62%] h-full bg-primary"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-primary text-white p-12 relative overflow-hidden">
+<div class="relative z-10 flex flex-col md:flex-row justify-between items-center gap-8">
+<div class="max-w-md">
+<h4 class="text-3xl font-black tracking-tighter mb-4">Strategic Capital Call</h4>
+<p class="text-slate-400 text-sm leading-relaxed">Initiate deployment of secondary capital reserves for the Q1 2025 expansion phase. Total liquidity requirement: $45.0M.</p>
+</div>
+<button class="bg-secondary text-white whitespace-nowrap px-10 py-5 text-[10px] font-black tracking-[0.2em] uppercase hover:scale-95 transition-transform active:scale-90">AUTHORIZE ALLOCATION</button>
+</div>
+<div class="absolute top-0 right-0 w-32 h-32 opacity-10">
+<span class="material-symbols-outlined text-[120px]" style="font-variation-settings: 'FILL' 1;">monetization_on</span>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Footer (Authority: JSON) -->
+<footer class="mt-24 w-full py-12 px-8 bg-[#000410] grid grid-cols-1 md:grid-cols-2 gap-8 items-end">
+<div>
+<div class="text-xl font-black text-white mb-4">ALFTON</div>
+<p class="font-['Manrope'] text-[11px] tracking-widest uppercase text-slate-500">© 2024 ALPTON CONSTRUCTION. THE ARCHITECTURAL MONOLITH.</p>
+</div>
+<div class="flex flex-wrap gap-6 md:justify-end">
+<a class="font-['Manrope'] text-[11px] tracking-widest uppercase text-slate-500 hover:text-[#775a19] transition-colors" href="#">Privacy Policy</a>
+<a class="font-['Manrope'] text-[11px] tracking-widest uppercase text-slate-500 hover:text-[#775a19] transition-colors" href="#">Terms of Service</a>
+<a class="font-['Manrope'] text-[11px] tracking-widest uppercase text-slate-500 hover:text-[#775a19] transition-colors" href="#">Licensing</a>
+<a class="font-['Manrope'] text-[11px] tracking-widest uppercase text-slate-500 hover:text-[#775a19] transition-colors" href="#">Sustainability</a>
+</div>
+</footer>
+</main>
+<!-- Contextual FAB (Suppressed on Admin Detail View per Logic) -->
+<!-- Suppression Logic: FAB is for Home/Dashboard context. For Lead Control, prioritization is content canvas. -->
+</body></html>

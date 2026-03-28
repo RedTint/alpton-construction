@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ALFTON | Financing Wizard - Project Scope</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-secondary-fixed-variant": "#5d4201",
+                        "secondary-container": "#fed488",
+                        "primary-fixed-dim": "#b6c7e9",
+                        "on-tertiary-fixed-variant": "#5f4020",
+                        "on-secondary-fixed": "#261900",
+                        "on-tertiary-container": "#a57e59",
+                        "tertiary-fixed-dim": "#ecbe95",
+                        "secondary": "#775a19",
+                        "surface-container-highest": "#e2e2e5",
+                        "inverse-surface": "#2f3133",
+                        "surface-bright": "#f9f9fc",
+                        "on-primary-fixed-variant": "#364763",
+                        "secondary-fixed": "#ffdea5",
+                        "on-tertiary-fixed": "#2d1600",
+                        "on-primary": "#ffffff",
+                        "surface-dim": "#dadadc",
+                        "on-primary-container": "#7586a6",
+                        "secondary-fixed-dim": "#e9c176",
+                        "on-surface": "#1a1c1e",
+                        "surface-tint": "#4e5f7c",
+                        "inverse-primary": "#b6c7e9",
+                        "on-error": "#ffffff",
+                        "tertiary": "#0a0300",
+                        "outline-variant": "#c5c6ce",
+                        "error": "#ba1a1a",
+                        "outline": "#75777e",
+                        "on-error-container": "#93000a",
+                        "surface-container": "#eeeef0",
+                        "on-primary-fixed": "#081c36",
+                        "inverse-on-surface": "#f0f0f3",
+                        "surface-variant": "#e2e2e5",
+                        "primary-container": "#0b1e38",
+                        "on-tertiary": "#ffffff",
+                        "primary": "#000410",
+                        "tertiary-fixed": "#ffdcbf",
+                        "background": "#f9f9fc",
+                        "on-background": "#1a1c1e",
+                        "surface-container-high": "#e8e8ea",
+                        "on-surface-variant": "#44474d",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#f3f3f6",
+                        "tertiary-container": "#301800",
+                        "primary-fixed": "#d6e3ff",
+                        "surface": "#f9f9fc",
+                        "error-container": "#ffdad6",
+                        "on-secondary-container": "#785a1a",
+                        "on-secondary": "#ffffff"
+                    },
+                    fontFamily: {
+                        "headline": ["Manrope", "sans-serif"],
+                        "body": ["Manrope", "sans-serif"],
+                        "label": ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0px", "lg": "0px", "xl": "0px", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .tonal-transition {
+            background: linear-gradient(to bottom, transparent, rgba(243, 243, 246, 0.5));
+        }
+        input:focus {
+            outline: none !important;
+            box-shadow: none !important;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body overflow-x-hidden">
+<!-- Top Navigation (Shell Suppressed for Focus, but using TopNavBar logic as fallback header) -->
+<header class="fixed top-0 w-full z-50 bg-white/70 backdrop-blur-xl flex justify-between items-center px-8 py-6 max-w-full">
+<div class="text-2xl font-black tracking-tighter text-primary">ALFTON</div>
+<div class="flex items-center gap-4">
+<span class="font-label text-[10px] tracking-widest uppercase font-bold text-outline">Step 02 / 04</span>
+<div class="w-32 h-1 bg-surface-container">
+<div class="w-1/2 h-full bg-secondary"></div>
+</div>
+</div>
+<button class="text-primary hover:text-secondary transition-colors duration-300 material-symbols-outlined" data-icon="close">close</button>
+</header>
+<main class="min-h-screen pt-32 pb-24 px-8 flex flex-col items-center">
+<!-- Hero Introduction -->
+<section class="max-w-4xl w-full mb-16">
+<h1 class="font-headline text-primary text-[3.5rem] leading-none font-extrabold tracking-tighter mb-6">
+                Define the <span class="text-secondary">Monolith.</span>
+</h1>
+<p class="text-on-surface-variant text-lg max-w-2xl font-light leading-relaxed">
+                To structure your financing plan, we must first understand the physical scale and architectural intent of your vision. Select the parameters that define your project's scope.
+            </p>
+</section>
+<!-- Financing Wizard Content: Project Scope Questionnaire -->
+<div class="max-w-4xl w-full grid grid-cols-1 md:grid-cols-12 gap-12">
+<!-- Left Column: Image Anchor (Asymmetric Layout) -->
+<div class="md:col-span-5 relative">
+<div class="aspect-[3/4] w-full bg-primary overflow-hidden">
+<img class="w-full h-full object-cover opacity-80 mix-blend-luminosity hover:opacity-100 transition-opacity duration-700" data-alt="high-end architectural detail of a monolithic concrete structure with sharp angles and golden hour sunlight casting dramatic shadows" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBitoijpZG9v4JUuZJ1DaNcLrSP6ocYHBGVKZAsevdkWHQeU_LKPbhGquNSErN0KYA8GWI8ZNH_rQj1LtgXYLZIv-LNE3VoITbrMcFKwpavCHt5PsTImUX2eR9fjtOQQQfZKyTaoZzkQS_gJyHHVicJnAh0GUjtJxFtrYjgEspDp4izt-JsQB6qF8SfoIOrUYE98CwKeKy86YZLVpNUo6Jo9r1tawte5Pxg7XmvwwX281-bGyCwSDYbXhbWv1nzKehmktdVFt7BRbA"/>
+</div>
+<div class="absolute -bottom-6 -right-6 bg-secondary p-8 text-white hidden md:block">
+<span class="block font-label text-[10px] tracking-widest uppercase mb-2">Technical Specs</span>
+<p class="text-xs font-medium leading-tight italic">"Architecture is the learned game, correct and magnificent, of forms assembled in light."</p>
+</div>
+</div>
+<!-- Right Column: Questionnaire Form -->
+<form class="md:col-span-7 flex flex-col gap-12">
+<!-- Question 1: Build Type -->
+<div class="flex flex-col gap-4">
+<label class="font-label text-[11px] tracking-widest uppercase font-bold text-secondary">01. Primary Construction Type</label>
+<div class="grid grid-cols-1 gap-3">
+<button class="group flex items-center justify-between p-6 bg-surface-container-low border-b-2 border-transparent hover:border-secondary transition-all text-left" type="button">
+<div>
+<h4 class="font-bold text-primary tracking-tight">New Ground-Up Construction</h4>
+<p class="text-xs text-on-surface-variant mt-1">Starting from raw land or complete demolition.</p>
+</div>
+<span class="material-symbols-outlined text-secondary opacity-0 group-hover:opacity-100 transition-opacity" data-icon="architecture">architecture</span>
+</button>
+<button class="group flex items-center justify-between p-6 bg-primary text-white transition-all text-left" type="button">
+<div>
+<h4 class="font-bold tracking-tight">Large Scale Renovation</h4>
+<p class="text-xs text-slate-400 mt-1">Structural overhaul of an existing monolith.</p>
+</div>
+<span class="material-symbols-outlined text-secondary" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</button>
+</div>
+</div>
+<!-- Question 2: Estimated Square Footage -->
+<div class="flex flex-col gap-4">
+<label class="font-label text-[11px] tracking-widest uppercase font-bold text-secondary">02. Total Interior Volume (SQ FT)</label>
+<div class="relative group">
+<input class="w-full bg-transparent border-b border-outline-variant py-4 text-3xl font-headline font-bold text-primary placeholder:text-surface-container-highest focus:border-primary transition-colors" placeholder="e.g. 5,000" type="text"/>
+<span class="absolute right-0 bottom-4 font-label text-[10px] tracking-widest uppercase text-outline">Square Feet</span>
+</div>
+</div>
+<!-- Question 3: Site Terrain (Bento-style selection) -->
+<div class="flex flex-col gap-4">
+<label class="font-label text-[11px] tracking-widest uppercase font-bold text-secondary">03. Topographical Complexity</label>
+<div class="grid grid-cols-2 gap-4">
+<div class="p-6 bg-surface-container-low flex flex-col gap-4 cursor-pointer hover:bg-surface-container-high transition-colors group">
+<span class="material-symbols-outlined text-primary" data-icon="landscape">landscape</span>
+<span class="font-bold text-sm">Level Terrain</span>
+</div>
+<div class="p-6 bg-surface-container-low flex flex-col gap-4 cursor-pointer border-b-2 border-secondary group">
+<span class="material-symbols-outlined text-secondary" data-icon="terrain" style="font-variation-settings: 'FILL' 1;">terrain</span>
+<span class="font-bold text-sm">Steep / Hillside</span>
+</div>
+<div class="p-6 bg-surface-container-low flex flex-col gap-4 cursor-pointer hover:bg-surface-container-high transition-colors group">
+<span class="material-symbols-outlined text-primary" data-icon="water" data-weight="fill">water</span>
+<span class="font-bold text-sm">Coastal / Waterfront</span>
+</div>
+<div class="p-6 bg-surface-container-low flex flex-col gap-4 cursor-pointer hover:bg-surface-container-high transition-colors group">
+<span class="material-symbols-outlined text-primary" data-icon="location_city">location_city</span>
+<span class="font-bold text-sm">Urban Infill</span>
+</div>
+</div>
+</div>
+<!-- Action Bar -->
+<div class="pt-8 flex items-center justify-between gap-6">
+<button class="font-label text-[11px] tracking-widest uppercase font-bold text-outline hover:text-primary transition-colors flex items-center gap-2" type="button">
+<span class="material-symbols-outlined text-sm" data-icon="arrow_back">arrow_back</span>
+                        Previous Step
+                    </button>
+<button class="bg-primary text-white px-12 py-5 font-label text-[12px] tracking-[0.2em] uppercase font-extrabold hover:bg-primary-container transition-all active:scale-95" type="submit">
+                        Establish Budget →
+                    </button>
+</div>
+</form>
+</div>
+</main>
+<!-- Footer (Shell Authority: Footer) -->
+<footer class="bg-primary py-12 px-8 grid grid-cols-1 md:grid-cols-2 gap-8 items-end">
+<div>
+<div class="text-xl font-black text-white mb-4">ALFTON</div>
+<p class="font-label text-[11px] tracking-widest uppercase text-slate-500">© 2024 ALPTON CONSTRUCTION. THE ARCHITECTURAL MONOLITH.</p>
+</div>
+<div class="flex flex-wrap gap-6 md:justify-end">
+<a class="font-label text-[11px] tracking-widest uppercase text-slate-500 hover:text-secondary transition-colors" href="#">Privacy Policy</a>
+<a class="font-label text-[11px] tracking-widest uppercase text-slate-500 hover:text-secondary transition-colors" href="#">Terms of Service</a>
+<a class="font-label text-[11px] tracking-widest uppercase text-slate-500 hover:text-secondary transition-colors" href="#">Licensing</a>
+<a class="font-label text-[11px] tracking-widest uppercase text-slate-500 hover:text-secondary transition-colors" href="#">Sustainability</a>
+</div>
+</footer>
+</body></html>
