@@ -43,8 +43,10 @@ export const useWizardStore = create<WizardState>((set, get) => ({
   prevStep: () => set((state) => ({ currentStep: Math.max(state.currentStep - 1, 1) })),
   updateData: (partial) => set((state) => ({ data: { ...state.data, ...partial } })),
   submitLead: async () => {
-    console.log("Submitting lead directly to Supabase...", get().data);
-    // API logic will be placed here
+    // API logic will go here eventually
+    console.log("Submitting lead into admin store local state...", get().data);
+    const { useAdminStore } = await import('./adminStore');
+    useAdminStore.getState().addLead(get().data);
     set({ currentStep: 4 }); // Success step
   },
   resetWizard: () => set({ currentStep: 1, data: initialData, isOpen: false })
