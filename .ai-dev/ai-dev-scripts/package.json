@@ -1,15 +1,28 @@
 {
   "name": "ai-dev-scripts",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Project management scripts for AI Dev Agency — reads docs/epics/ and aggregates stats",
   "private": true,
   "scripts": {
-    "aggregate": "node aggregate-epics.js",
-    "aggregate:update": "node aggregate-epics.js --update",
-    "aggregate:table": "node aggregate-epics.js --output=table",
-    "test": "node --test --test-reporter=spec aggregate-epics.test.js"
+    "aggregate": "node aggregate-epics.js --docs-path=../../docs",
+    "aggregate:update": "node aggregate-epics.js --docs-path=../../docs --update",
+    "aggregate:reconcile": "node aggregate-epics.js --docs-path=../../docs --reconcile",
+    "aggregate:table": "node aggregate-epics.js --docs-path=../../docs --output=table",
+    "validate": "node validate-stories.js --docs-path=../../docs",
+    "validate:fix": "node validate-stories.js --docs-path=../../docs --fix",
+    "validate:migrate": "node validate-stories.js --docs-path=../../docs --migrate",
+    "validate:table": "node validate-stories.js --docs-path=../../docs --output=table",
+    "create-story": "node create-story-file.js --docs-path=../../docs",
+    "graph": "node dependency-graph.js --docs-path=../../docs --output=xyflow",
+    "graph:mermaid": "node dependency-graph.js --docs-path=../../docs --output=mermaid",
+    "graph:json": "node dependency-graph.js --docs-path=../../docs --output=json",
+    "sync": "node sync-board.js --docs-path=../../docs",
+    "sync:dry": "node sync-board.js --docs-path=../../docs --dry-run",
+    "sync:validate": "node sync-board.js --docs-path=../../docs --validate",
+    "test": "node --test --test-reporter=spec *.test.js"
   },
   "dependencies": {
     "gray-matter": "^4.0.3"
   }
 }
+

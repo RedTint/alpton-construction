@@ -37,6 +37,38 @@ Build and scaffold frontend implementation based on specifications from document
      🚧 Story {storyId} transitioned: pending → in-progress
      ```
 
+### Phase 0b: Pre-build Validation + Dependency Context
+
+1. **Validate Story File** (only if `--story-file` provided)
+   - Run:
+     ```bash
+     node .ai-dev/ai-dev-scripts/validate-stories.js --docs-path=./docs --epic={epicId} --output=table
+     ```
+   - If the current story has validation errors, display them and recommend fixing first
+   - If only warnings, continue
+
+2. **Load Dependency Graph** (only if `--story-file` provided)
+   - Run:
+     ```bash
+     node .ai-dev/ai-dev-scripts/dependency-graph.js --docs-path=./docs --epic={epicId} --output=json
+     ```
+   - Parse JSON and extract for the current story:
+     - **Dependencies**: stories this story depends on → if any are in `done/`, read their implementations for established patterns (API contracts, component interfaces, naming conventions)
+     - **Dependents**: stories that depend on this one → understand what interfaces to design and expose
+     - **Parallelizable**: whether this story can be built in parallel with others
+   - Display:
+     ```
+     📋 Story Dependencies:
+     - Depends on: {list with status}
+     - Depended by: {list}
+     - Parallelizable: {yes/no}
+     ```
+   - If a dependency story is NOT done, display warning:
+     ```
+     ⚠️ Dependency {storyId} is not yet complete ({status}).
+     Building anyway, but be aware of potential interface mismatches.
+     ```
+
 ### Phase 1: Git Branch Safety Check
 
 1. **Check Current Git Branch**

@@ -94,51 +94,30 @@ description: Add new feature to latest PRD and Atomic Stories, select/create tar
    - UACs tagged: FE: / BE: / DB: / DevOps: / CLI: / TEST:
    - Dependencies on existing stories
 
-   After atomic stories updated, create individual epic story file:
+   After atomic stories updated, create individual epic story file using the script:
 
-   Determine story file path:
-   - Scan docs/epics/{selectedEpicDir}/*/ for existing story numbers → next storyNum
-   - Title slug: lowercase, hyphens, max 60 chars
-   - Path: docs/epics/{selectedEpicDir}/pending/{epicId}-{storyNum}-{title-slug}.md
+   Collect UAC lines from the story as JSON array: [{"type":"FE","text":"..."},{"type":"BE","text":"..."}]
+   Write to /tmp/uacs.json if long.
 
-   Count UAC lines by type (FE/BE/DB/DevOps/CLI/TEST) from the story created above.
+   // turbo
+   node .ai-dev/ai-dev-scripts/create-story-file.js \
+     --docs-path=./docs \
+     --epic={selectedEpicId} \
+     --title="{feature title}" \
+     --priority={priority} \
+     --points={story_points} \
+     --uacs='[{uac json}]' \
+     --description="As a {persona}, I want {capability} so that {benefit}" \
+     --tags="{epicVersion}" \
+     --dependencies="{comma-separated dep IDs}"
 
-   Write story file with YAML frontmatter:
-   ---
-   story_id: "{epicId}-{storyNum}"
-   epic_id: "{epicId}"
-   story_name: "{feature title}"
-   story_status: pending
-   priority: {high|medium|low}
-   story_points: {points}
-   assignees: []
-   tags: [{epicVersion}, {epic slug tags}]
-   dependencies: []
-   created_at: "{ISO timestamp}"
-   updated_at: "{ISO timestamp}"
-   completed_at: null
-   uac_total: {count}
-   uac_completed: 0
-   uac_pending: {count}
-   uac_completion_pct: 0
-   uac_by_type:
-     fe: {count}
-     be: {count}
-     db: {count}
-     devops: {count}
-     cli: {count}
-     test: {count}
-   test_coverage: null
-   test_unit_status: "pending"
-   test_e2e_status: "pending"
-   test_integration_status: "pending"
-   ---
+   Or with file: --uacs-file=/tmp/uacs.json
 
-   Body: ## Description, ## User Acceptance Criteria (- [ ] TYPE: text checkboxes),
-   ## Test Requirements, ## Dependencies, ## Notes
+   Script auto-handles: story number increment, related doc links, changelog, v2 format, aggregate-epics refresh.
 
-   Refresh epic stats:
-   node .ai-dev/ai-dev-scripts/aggregate-epics.js --update --docs-path=./docs --epic={selectedEpicId}
+   Parse stdout for STORY_FILE= and STORY_ID= values.
+   Display: ✅ Epic story file created: {STORY_FILE}
+   If script fails, fall back to manual file creation following the v2 story format.
 
 8. Create Draft Architecture Documents
    Use copy-then-edit pattern for each affected component:

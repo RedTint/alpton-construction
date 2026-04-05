@@ -76,7 +76,24 @@ Intelligently orchestrate implementation based on atomic stories by detecting av
      ```
    - If no learnings found or no README exists, skip this step silently
 
-5. **Analyze UAC Distribution**
+6. **Pre-build Validation + Dependency Graph**
+   - Run: `node .ai-dev/ai-dev-scripts/validate-stories.js --docs-path=./docs --output=table`
+   - If errors found: display and warn but do not abort
+   - Run: `node .ai-dev/ai-dev-scripts/dependency-graph.js --docs-path=./docs --output=json`
+   - Parse JSON result:
+     - `buildOrder`: topological sort — shows which stories to build first
+     - `parallelizable`: stories with all dependencies in `done/` — can be built in parallel
+     - `cycles`: circular dependencies (display warning if any)
+   - Display:
+     ```
+     📋 Dependency Analysis:
+     - Stories: {N} total, {M} parallelizable
+     - Cycles: {0 or list}
+     - Suggested build order: {first 5}
+     ```
+   - Use this order when presenting story options to user
+
+7. **Analyze UAC Distribution**
    - Count total UACs by type:
      - Total FE: UACs
      - Total BE: UACs
@@ -483,7 +500,7 @@ The `/build` command is successful when:
 - Build result caching for faster iterations
 
 ### v1.2.0
-- Dependency analysis (build BE before FE if FE depends on BE)
+- ~~Dependency analysis~~ ✅ Implemented via `dependency-graph.js` (Phase 1 step 5)
 - Incremental builds (only build changed UACs)
 - Build profiles (quick build vs full build)
 - CI/CD integration for automated builds

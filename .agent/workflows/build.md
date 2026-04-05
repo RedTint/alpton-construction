@@ -9,7 +9,28 @@ description: Intelligently orchestrate implementation using epic story files fro
    - Note they are excluded from build
    Continue (excluding drafts)
 
-2. Detect Epic Story Files (primary source)
+2. Pre-build Validation + Dependency Graph
+   // turbo
+   node .ai-dev/ai-dev-scripts/validate-stories.js --docs-path=./docs --output=table
+
+   If errors found: display and warn (do not abort, but recommend fixing first).
+   If many "Missing Changelog" warnings, note: "Run validate:migrate to upgrade files."
+
+   // turbo
+   node .ai-dev/ai-dev-scripts/dependency-graph.js --docs-path=./docs --output=json
+
+   Parse JSON result. From the graph:
+   - buildOrder: topological sort — shows which stories to build first
+   - parallelizable: stories whose dependencies are all "done" — can be built in parallel
+   - cycles: circular dependencies (display warning if any)
+
+   Display:
+   📋 Dependency Analysis:
+   - Stories: {N} total, {M} parallelizable (ready to build)
+   - Cycles: {0 or list}
+   - Suggested build order: {first 5 from buildOrder}
+
+3. Detect Epic Story Files (primary source)
    Glob docs/epics/*/pending/*.md — exclude epic.md files and bugs/ directory
    Glob docs/epics/*/in-progress/*.md — already-started stories
    For each found story file, read YAML frontmatter: story_id, epic_id, story_name, story_status, uac_by_type
@@ -26,39 +47,39 @@ description: Intelligently orchestrate implementation using epic story files fro
    - Read latest production version
    - Extract UACs by tag (FE:, BE:, DB:, DevOps:)
 
-3. Find and Read Progress Tracking
+4. Find and Read Progress Tracking
    Search for progress document: docs/progress/000-progress-v*.md
    EXCLUDE files with -draft suffix
    Read matching version
    Identify stories: Completed (skip), In Progress (show), Pending (show), Blocked (warn)
 
-4. Check for Relevant Learnings
+5. Check for Relevant Learnings
    Check if docs/learnings/000-README.md exists
    If exists, scan for keywords related to pending stories
    Display relevant learnings if found
 
-5. Analyze UAC Distribution
+6. Analyze UAC Distribution
    Count total and pending UACs by type
    Determine which build commands are needed:
    - Pending FE: UACs → Need /build-fe
    - Pending BE:/DB: UACs → Need /build-be
    - Pending DevOps: UACs → Need /build-devops
 
-6. Detect Available Build Skills
+7. Detect Available Build Skills
    Look for skill files:
    - .claude/skills/build-fe/skill.md
    - .claude/skills/build-be/skill.md
    - .claude/skills/build-devops/skill.md
    Match available skills to pending UAC types
 
-7. Present Options to User
+8. Present Options to User
    Display pending work summary and available build commands
    // Note: Manual user input required
    // Original: AskUserQuestion tool
    Ask: "Which build commands should be executed? (build-fe / build-be / build-devops / all)"
    Ask: "Sequential or parallel execution?"
 
-8. Execute Build Commands
+9. Execute Build Commands
    Sequential: execute one at a time
    Parallel (recommended): launch multiple agents concurrently
 
@@ -73,12 +94,12 @@ description: Intelligently orchestrate implementation using epic story files fro
 
    If no epic story files (fallback mode): execute skills without --story-file
 
-9. Aggregate Results and Update Progress
+10. Aggregate Results and Update Progress
    Collect outputs from each build command
    Run /update-progress to refresh progress document
    Validate generated code (lint, type check, syntax)
 
-10. Display Unified Summary
+11. Display Unified Summary
     Show consolidated report:
     - Files created per domain
     - UACs implemented

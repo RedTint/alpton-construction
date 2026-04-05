@@ -141,16 +141,32 @@ C4 architecture diagrams template with section headers:
 **Note:** Minimal skeleton with section headers only. Use /define to elaborate.
 
 ### 200-atomic-stories-v1.0.0.md
-Atomic stories template with section headers:
-- Story format (As a... I want... So that...)
-- User Acceptance Criteria (UAC)
-- Technical tasks breakdown
-- Test requirements (unit + E2E)
-- Story points/effort estimation
-- Dependencies
-- One iteration per feature approach
+Atomic stories template. **⚠️ MANDATORY FORMAT** — use this exact heading pattern (required by `sync-board.js` parser):
+```
+## Epic NNN – Epic Name
 
-**Note:** Minimal skeleton with section headers only. Use /define to elaborate.
+### Story NNN – Story Title
+
+**As a** {persona}
+**I want** {goal}
+**So that** {benefit}
+
+**Priority:** High
+**Effort:** 5
+**Dependencies:** None
+
+#### User Acceptance Criteria
+- [ ] FE: {frontend criterion}
+- [ ] BE: {backend criterion}
+- [ ] TEST: {test requirement}
+```
+Format rules:
+- Epic heading: `## Epic NNN –` (en-dash or em-dash, NOT colon, NNN = 3-digit zero-padded)
+- Story heading: `### Story NNN –` (same dash rule)
+- UAC: checkbox `- [ ] TYPE: text` — TYPE = FE | BE | DB | DevOps | CLI | TEST
+- Do NOT use tables for stories or UACs
+
+**Note:** Minimal skeleton with placeholders. Use `/define` to elaborate, then `/sync-board` to scaffold `docs/epics/`.
 
 ### 300-frontend-v1.0.0.md
 Frontend architecture template with section headers:
@@ -290,6 +306,7 @@ Example ADR template structure to include:
    - Fill out `docs/001-project-init.md` with their initial ideas
    - Review and optionally fill out `docs/002-prd-v1.0.0.md`
    - Use `/define @{filename}` command to elaborate specific documents as needed
+   - After elaborating atomic stories, run `/migrate` to scaffold `docs/epics/` before building
 
 5. **Confirm Completion**
    List all created files and provide clear next steps.
@@ -346,6 +363,20 @@ Examples:
   /define @100-userflows-v1.0.0.md based on the personas from PRD
   /define @150-tech-stacks-v1.0.0.md suggest appropriate tech stack
   /define @200-atomic-stories-v1.0.0.md for MVP features only
+
+**Step 4: Scaffold the Epic Structure (Required before building)**
+→ After elaborating atomic stories, run /migrate
+→ This converts docs/200-atomic-stories-v1.0.0.md into the docs/epics/ file structure
+→ /build, /new-feature, and /update-progress all depend on this structure
+
+  /migrate
+
+**Step 5: Start Building**
+→ Once epics are scaffolded, use build commands:
+  /build        (auto-detects what to build)
+  /build-fe     (frontend only)
+  /build-be     (backend only)
+  /build-devops (infrastructure only)
 
 **Why This Approach?**
 Skeleton files are created now to save tokens. You provide the project context first, then we elaborate documents one-by-one as needed. This avoids wasting tokens on premature details.

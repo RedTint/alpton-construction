@@ -18,6 +18,26 @@ description: Build frontend implementation with epic context pre-load, story fil
    - Run: node .ai-dev/ai-dev-scripts/aggregate-epics.js --update --docs-path=./docs --epic={epicId}
    - Display: "🚧 Story {storyId} transitioned: pending → in-progress"
 
+1b. Pre-build Validation + Dependency Context
+    // turbo
+    node .ai-dev/ai-dev-scripts/validate-stories.js --docs-path=./docs --epic={epicId} --output=table
+
+    If errors found in this story: display and recommend fixing first.
+
+    // turbo
+    node .ai-dev/ai-dev-scripts/dependency-graph.js --docs-path=./docs --epic={epicId} --output=json
+
+    From graph result, extract for the current story:
+    - Dependencies: stories this story depends on → read their "done" implementations for patterns
+    - Dependents: stories that depend on this one → understand what interfaces to expose
+    - Parallelizable: whether this story can be built in parallel with others
+
+    Display:
+    📋 Story Dependencies:
+    - Depends on: {list of dependency stories + status}
+    - Depended by: {list of dependent stories}
+    - Parallelizable: {yes/no}
+
 2. Git Branch Safety Check
    Run: git rev-parse --abbrev-ref HEAD
    If branch is protected (main, master, develop, staging, production):

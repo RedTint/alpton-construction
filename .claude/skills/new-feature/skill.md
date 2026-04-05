@@ -299,91 +299,51 @@ Add new feature requirements to the latest PRD and Atomic Stories with draft mod
    - Only modifies what needs to change
    - Saves thousands of tokens (especially with large story lists)
 
-### Phase 5b: Create Epic Story File
+### Phase 5b: Create Epic Story File via Script
 
-Create an individual story file in `docs/epics/` so the dashboard and `/update-progress` see the new story immediately — without requiring a manual `/sync-board` run.
+Create an individual story file in `docs/epics/` using the `create-story-file.js` script so the dashboard and `/update-progress` see the new story immediately — without requiring a manual `/sync-board` run.
 
-1. **Determine Story File Path**
-   - Epic dir: `docs/epics/{selectedEpicDir}/` (resolved in Phase 3, step 3)
-   - Status subdir: `pending/` (all new stories start pending)
-   - Story ID format: `{selectedEpicId}-{storyNum}` (e.g., `"007-333"`)
-     - To find `storyNum`: count existing story files across all status subdirs of the selected epic, then add 1 to the highest story number found; fall back to the story ID assigned in Phase 5 (e.g., Story 333 → `333`)
-   - Title slug: lowercase feature title, spaces/special chars replaced with hyphens (max 60 chars)
-   - File path: `docs/epics/{selectedEpicDir}/pending/{epicId}-{storyNum}-{title-slug}.md`
+1. **Build the UACs JSON** from the UACs generated in Phase 5
+   - Collect all UAC lines as a JSON array: `[{"type":"FE","text":"..."},{"type":"BE","text":"..."}]`
+   - Write to a temp file if the JSON is long: `/tmp/uacs.json`
 
-2. **Build YAML Frontmatter**
-   - Count UAC lines generated in Phase 5 by type (FE:, BE:, DB:, DevOps:, CLI:, TEST:)
-   - Generate frontmatter following the canonical story schema:
-     ```yaml
-     story_id: "{epicId}-{storyNum}"
-     epic_id: "{epicId}"
-     story_name: "{feature title}"
-     story_status: pending
-     priority: {high|medium|low — from Phase 5 effort analysis}
-     story_points: {points from Phase 5}
-     assignees: []
-     tags: [{epicVersion}, {epic slug tags}]
-     dependencies: []
-     created_at: "{ISO timestamp}"
-     updated_at: "{ISO timestamp}"
-     completed_at: null
-     uac_total: {count of all UAC lines}
-     uac_completed: 0
-     uac_pending: {count of all UAC lines}
-     uac_completion_pct: 0
-     uac_by_type:
-       fe: {count}
-       be: {count}
-       db: {count}
-       devops: {count}
-       cli: {count}
-       test: {count}
-     test_coverage: null
-     test_unit_status: "pending"
-     test_e2e_status: "pending"
-     test_integration_status: "pending"
-     ```
+2. **Run create-story-file.js**
+   ```bash
+   node .ai-dev/ai-dev-scripts/create-story-file.js \
+     --docs-path=./docs \
+     --epic={selectedEpicId} \
+     --title="{feature title}" \
+     --priority={priority} \
+     --points={story_points} \
+     --uacs='[{uac json array}]' \
+     --description="As a {persona}, I want {capability} so that {benefit}" \
+     --tags="{epicVersion}" \
+     --dependencies="{comma-separated dep IDs}"
+   ```
+   Or with file: `--uacs-file=/tmp/uacs.json`
 
-3. **Write Story File**
-   - Use Write tool to create the file at the path determined in step 1
-   - Body should follow the standard story format:
-     ```markdown
-     ## Description
+   The script automatically:
+   - Auto-increments the story number (scans existing files)
+   - Discovers and links all related docs (PRD, frontend, backend, etc.)
+   - Adds a changelog entry with creation timestamp
+   - Generates full v2 YAML frontmatter + markdown body
+   - Calls `aggregate-epics.js --update` to refresh epic stats
 
-     **As a** {persona}
-     **I want** {capability}
-     **So that** {benefit}
+3. **Parse script output**
+   The script prints to stdout:
+   ```
+   STORY_FILE=docs/epics/{epicDir}/pending/{filename}
+   STORY_ID={epicId}-{storyNum}
+   ```
+   Parse these values for the summary report.
 
-     ## User Acceptance Criteria
+4. **Display confirmation**
+   ```
+   ✅ Epic story file created: {STORY_FILE}
+   ✅ Epic {selectedEpicId} stats refreshed via aggregate-epics.js --update
+   ```
 
-     - [ ] FE: {criteria...}
-     - [ ] BE: {criteria...}
-     - [ ] CLI: {criteria...}
-     ... (copy UACs from the atomic stories entry generated in Phase 5)
-
-     ## Test Requirements
-     - **Unit Tests:** {description}
-     - **E2E Tests:** {description}
-
-     ## Dependencies
-     {None | list of story IDs}
-
-     ## Notes
-
-     ```
-   - The UAC checkboxes must use `- [ ] TYPE: description` format so `--reconcile` can parse them
-
-4. **Update Epic Stats**
-   - Run the aggregation script to refresh `epic.md` frontmatter (`total_stories`, `total_points`, `stories_by_status`):
-     ```bash
-     node .ai-dev/ai-dev-scripts/aggregate-epics.js --update --docs-path=./docs --epic={selectedEpicId}
-     ```
-   - If the script exits non-zero, display a warning but don't abort — the story file was already written
-   - Display confirmation:
-     ```
-     ✅ Epic story file created: docs/epics/{epicDir}/pending/{filename}
-     ✅ Epic {epicId} stats refreshed via aggregate-epics.js --update
-     ```
+   If the script exits non-zero, display the error but don't abort — fall back to manual file creation following the v2 story format.
 
 ### Phase 6: Create Draft Architecture Documents
 

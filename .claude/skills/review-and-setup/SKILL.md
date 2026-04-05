@@ -148,12 +148,34 @@ Create C4 architecture diagrams from code analysis:
 - Data flow descriptions (trace request/response paths)
 
 ### 200-atomic-stories-v1.0.0.md
-Convert existing features into user stories:
-- Analyze features and create story format (As a... I want... So that...)
-- Document implicit acceptance criteria based on code behavior
+Convert existing features into user stories. **⚠️ MANDATORY FORMAT** — use this exact heading pattern (required by `sync-board.js` parser):
+```
+## Epic NNN – Epic Name
+
+### Story NNN – Story Title
+
+**As a** {persona}
+**I want** {goal}
+**So that** {benefit}
+
+**Priority:** High
+**Effort:** 5
+**Dependencies:** None
+
+#### User Acceptance Criteria
+- [ ] FE: {frontend criterion}
+- [ ] BE: {backend criterion}
+- [ ] TEST: {test requirement}
+```
+Format rules:
+- Epic heading: `## Epic NNN –` (en-dash or em-dash, NOT colon, NNN = 3-digit zero-padded)
+- Story heading: `### Story NNN –` (same dash rule)
+- UAC: checkbox `- [ ] TYPE: text` — TYPE = FE | BE | DB | DevOps | CLI | TEST
+- Do NOT use tables for stories or UACs
+- Analyze features and create stories based on code behavior
+- Document implicit acceptance criteria
 - Note existing test coverage per feature
 - Identify dependencies between features
-- List features by implementation order (if determinable from git history)
 
 ### 300-frontend-v1.0.0.md
 Document frontend architecture:

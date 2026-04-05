@@ -79,6 +79,103 @@ bash .ai-dev/ai-dev-scripts/client-new-setup.sh --client-name "Acme Corp" --clie
 
 ---
 
+### `validate-stories.js`
+**What it does:** Validates all story and epic files in `docs/epics/` for schema correctness, fixes safe issues, and migrates old files to v2 format.
+**Called by:** `/sync-board`, `/build-*` (pre-build validation), `/uat`
+**Usage:**
+```bash
+node .ai-dev/ai-dev-scripts/validate-stories.js
+node .ai-dev/ai-dev-scripts/validate-stories.js --fix
+node .ai-dev/ai-dev-scripts/validate-stories.js --migrate
+node .ai-dev/ai-dev-scripts/validate-stories.js --fix --migrate
+node .ai-dev/ai-dev-scripts/validate-stories.js --epic=007
+node .ai-dev/ai-dev-scripts/validate-stories.js --output=table
+```
+**Options:**
+| Flag | Description |
+|------|-------------|
+| `--fix` | Auto-fix safe issues (UAC counts, status mismatches) |
+| `--migrate` | Upgrade old files to v2 format (adds `design_links`, `related_docs`, `changelog`; additive only) |
+| `--epic=<id>` | Process only a specific epic |
+| `--output=json\|table` | Output format (default: json) |
+| `--docs-path=<path>` | Path to docs directory (default: `./docs`) |
+
+**Output:** JSON to stdout `{ valid, errors[], warnings[], fixed, migrated }`. Exit 0 on success, 1 if no epics dir, 2 if errors found.
+
+---
+
+### `create-story-file.js`
+**What it does:** Creates a properly formatted v2 story file with full YAML frontmatter, auto-discovered related doc links, changelog, and markdown body.
+**Called by:** `/new-feature`, `/sync-board` (internally)
+**Usage:**
+```bash
+node .ai-dev/ai-dev-scripts/create-story-file.js \
+  --epic=007 --title="Feature Name" --priority=high --points=8 \
+  --uacs='[{"type":"FE","text":"UI shows status"}]' \
+  --description="As a dev, I want..."
+```
+**Options:**
+| Flag | Description |
+|------|-------------|
+| `--epic=<id>` | **(Required)** Target epic ID |
+| `--title=<string>` | **(Required)** Story title |
+| `--priority=<level>` | high\|medium\|low (default: medium) |
+| `--points=<number>` | Story points (default: 5) |
+| `--uacs=<json>` | JSON array of `{type, text}` UAC objects |
+| `--uacs-file=<path>` | Path to JSON file with UAC array |
+| `--description=<string>` | Free-form description text |
+| `--tags=<csv>` | Comma-separated tags |
+| `--dependencies=<csv>` | Comma-separated dependency story IDs |
+| `--dry-run` | Print content without writing |
+| `--docs-path=<path>` | Path to docs directory (default: `./docs`) |
+
+**Output:** Prints `STORY_FILE=<path>` and `STORY_ID=<id>` to stdout. Calls `aggregate-epics.js --update` after creation.
+
+---
+
+### `dependency-graph.js`
+**What it does:** Builds a DAG from story `dependencies` fields, detects circular dependencies, calculates topological sort, and outputs XYFlow-compatible JSON, Mermaid, or raw graph data.
+**Called by:** `/build`, `/update-progress`
+**Usage:**
+```bash
+node .ai-dev/ai-dev-scripts/dependency-graph.js --output=xyflow
+node .ai-dev/ai-dev-scripts/dependency-graph.js --output=mermaid --epic=007
+node .ai-dev/ai-dev-scripts/dependency-graph.js --output=json
+```
+**Options:**
+| Flag | Description |
+|------|-------------|
+| `--output=xyflow\|mermaid\|json` | Output format (default: json) |
+| `--epic=<id>` | Process only a specific epic |
+| `--direction=LR\|TD` | Mermaid graph direction (default: LR) |
+| `--docs-path=<path>` | Path to docs directory (default: `./docs`) |
+
+**Output:** JSON (xyflow/raw) or Mermaid text to stdout. XYFlow JSON includes `nodes[]` with position, status color, UAC data and `edges[]` with animation. Stderr shows summary (node/edge count, cycles, parallelizable stories).
+
+---
+
+### `sync-board.js`
+**What it does:** Parses `docs/200-atomic-stories-v*.md`, creates/moves story files in `docs/epics/`, and refreshes epic stats. Replaces token-expensive agentic sync workflow.
+**Called by:** `/sync-board`, `/define` (auto-trigger after atomic stories)
+**Usage:**
+```bash
+node .ai-dev/ai-dev-scripts/sync-board.js
+node .ai-dev/ai-dev-scripts/sync-board.js --dry-run
+node .ai-dev/ai-dev-scripts/sync-board.js --epic=007
+node .ai-dev/ai-dev-scripts/sync-board.js --validate
+```
+**Options:**
+| Flag | Description |
+|------|-------------|
+| `--dry-run` | Show changes without writing |
+| `--epic=<id>` | Only sync a specific epic |
+| `--validate` | Run `validate-stories.js` only (no sync) |
+| `--docs-path=<path>` | Path to docs directory (default: `./docs`) |
+
+**Output:** JSON to stdout `{ created, skipped, moved, errors[], epics[] }`. Calls `aggregate-epics.js --update` after sync.
+
+---
+
 ## Templates
 
 ```

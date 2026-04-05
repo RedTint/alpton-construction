@@ -635,6 +635,21 @@ Automatically update progress tracking documentation based on completion status 
    - **Display Next Steps summary**
    - Suggest next actions
 
+### Phase 10b: Dependency Graph Summary (Optional)
+
+1. **Run Dependency Graph**
+   - Run: `node .ai-dev/ai-dev-scripts/dependency-graph.js --docs-path=./docs --output=json`
+   - Parse JSON result
+
+2. **Display Graph Summary**
+   ```
+   🔗 Dependency Graph:
+   - Total stories: {N}
+   - Parallelizable (ready to build): {M}
+   - Cycles detected: {0 or list}
+   - Suggested next stories: {first 3 parallelizable non-done stories}
+   ```
+
 ## Input Format
 
 **Command:**

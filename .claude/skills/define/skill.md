@@ -68,6 +68,39 @@ Based on the target document type, read related documents to gather context:
 
 **200-atomic-stories (User Stories):**
 - Read: 002-prd, 100-userflows, 125-design-system, 150-tech-stacks
+- **⚠️ SCRIPT-FIRST FLOW:** When the target document is `200-atomic-stories`, do NOT write stories inline. Instead:
+  1. Plan epics and stories (determine epic IDs, story titles, UACs, priorities, points, dependencies)
+  2. For each epic, ensure epic directory exists: `docs/epics/{epicId}-{slug}/`
+  3. For each story, call `create-story-file.js` to create the story file directly in `docs/epics/`:
+     ```bash
+     node .ai-dev/ai-dev-scripts/create-story-file.js \
+       --epic=001 \
+       --title="Story Title" \
+       --priority=high \
+       --points=8 \
+       --description="As a user, I want... So that..." \
+       --tags=v1.0.0,frontend,api \
+       --dependencies=001-001,002-100 \
+       --uacs='[{"type":"FE","text":"User can see dashboard"},{"type":"BE","text":"API returns data"},{"type":"TEST","text":"Unit tests pass"}]'
+     ```
+  4. After all stories are created, regenerate the atomic-stories index:
+     ```bash
+     node .ai-dev/ai-dev-scripts/sync-board.js --generate-index --docs-path=./docs
+     ```
+  5. The `200-atomic-stories` doc becomes a **read-only table index** — never edit it manually
+  - This flow eliminates format parsing issues and ensures story files are always valid
+  - If the agent needs to create a NEW epic, first create the epic directory and `epic.md`:
+    ```bash
+    mkdir -p docs/epics/{epicId}-{slug}/{pending,in-progress,qa,done,blocked}
+    ```
+    Then create `docs/epics/{epicId}-{slug}/epic.md` with YAML frontmatter:
+    ```yaml
+    ---
+    epic_id: "001"
+    epic_name: "Epic Name"
+    epic_version: "v1.0.0"
+    ---
+    ```
 
 **300-frontend (Frontend Architecture):**
 - Read: 125-design-system, 150-tech-stacks, 350-api-contract, 200-atomic-stories
@@ -277,6 +310,43 @@ Based on the target document type, read related documents to gather context:
 2. **Suggest Next Documents**
    - Based on the document dependency graph, recommend which document to define next
    - Follow logical progression: 001 → 002 → 100 → 125 → 150 → 175 → 200 → 300/325 → 350 → 375 → 400 → 425 → 450
+   - **Special case — `200-atomic-stories`:** When the target document is atomic stories, the agent should have already used `create-story-file.js` for each story (see Phase 2 context). Now regenerate the atomic-stories index:
+     ```
+     📋 Regenerating Atomic Stories Index...
+
+     Stories created directly in docs/epics/ via create-story-file.js.
+     Regenerating 200-atomic-stories as a read-only index...
+     ```
+
+     Execute:
+     ```bash
+     node .ai-dev/ai-dev-scripts/sync-board.js --generate-index --docs-path=./docs
+     ```
+
+     Then display results and continue:
+     ```
+     ✅ Atomic stories index regenerated!
+
+     📋 Index Results:
+     - {N} stories across {M} epics
+     - {P} total story points
+     - File: docs/200-atomic-stories-v{X}.md (read-only index)
+
+     Story files include:
+     - ✅ v2 YAML frontmatter with all required fields
+     - ✅ Related documentation links (auto-discovered)
+     - ✅ Changelog with creation timestamp
+     - ✅ Dependency tracking for DAG visualization
+
+     Documentation Sequence:
+     1. ✅ docs/epics/ structure populated (Complete)
+     2. ✅ 200-atomic-stories-v{X}.md index generated (Complete)
+     3. ⏳ 300-frontend-v{X}.md
+     4. ⏳ 325-backend-v{X}.md
+     ...
+     ```
+
+     If sync-board.js reports errors, display them and suggest manual `/sync-board` run.
 
 ## Input Format
 

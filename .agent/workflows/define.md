@@ -33,6 +33,9 @@ description: Elaborate and refine specific documentation files with AI assistanc
    - 150-tech-stacks: Read 002-prd, 400-testing-strategy, 425-devops
    - 175-c4-diagrams: Read 002-prd, 150-tech-stacks, 300/325/350/375
    - 200-atomic-stories: Read 002-prd, 100-userflows, 125-design-system, 150-tech-stacks
+     ⚠️ SCRIPT-FIRST: Do NOT write stories inline. Use create-story-file.js per story:
+     node .ai-dev/ai-dev-scripts/create-story-file.js --epic=NNN --title="..." --priority=high --points=N --uacs='[...]' --description="..."
+     Then regenerate index: node .ai-dev/ai-dev-scripts/sync-board.js --generate-index --docs-path=./docs
    - 300-frontend: Read 125-design-system, 150-tech-stacks, 350-api-contract, 200-atomic-stories
    - 325-backend: Read 150-tech-stacks, 350-api-contract, 375-database-schema, 200-atomic-stories
    - 350-api-contract: Read 002-prd, 150-tech-stacks, 300-frontend, 325-backend, 200-atomic-stories
@@ -110,3 +113,15 @@ description: Elaborate and refine specific documentation files with AI assistanc
 
     Suggest next documents based on dependency graph:
     Recommended sequence: 001 → 002 → 100 → 125 → 150 → 175 → 200 → 300/325 → 350 → 375 → 400 → 425 → 450
+
+11. Regenerate Atomic Stories Index (if atomic stories updated)
+    If the target document matches `200-atomic-stories-v*.md`:
+    Stories should already be created via create-story-file.js (see step 4).
+    Now regenerate the read-only index:
+    // turbo
+    Run: node .ai-dev/ai-dev-scripts/sync-board.js --generate-index --docs-path=./docs
+    Display: "📋 Atomic stories index regenerated from docs/epics/"
+    Display index results (stories count, points, epics count)
+
+    If any errors from sync-board.js:
+    Display error details and suggest manual /sync-board run

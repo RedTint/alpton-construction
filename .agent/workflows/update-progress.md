@@ -264,3 +264,14 @@ description: Update progress tracking docs using aggregate-epics.js --reconcile 
 
     📝 Updated: docs/progress/000-progress-v{version}.md
     🕐 Timestamp: {current_timestamp}
+
+15. Display Dependency Graph Summary (optional)
+    // turbo
+    node .ai-dev/ai-dev-scripts/dependency-graph.js --docs-path=./docs --output=json
+
+    Display:
+    🔗 Dependency Graph:
+    - Total stories: {N}
+    - Parallelizable (ready to build): {M}
+    - Cycles detected: {0 or list}
+    - Suggested next stories: {first 3 parallelizable non-done stories}
