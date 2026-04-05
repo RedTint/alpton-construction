@@ -740,6 +740,92 @@ describe('aggregate-epics.js', () => {
     });
   });
 
+  // ── YAML octal-safe epic_id round-trip ────────────────────────────────────
+  //
+  // Leading-zero integers in bare YAML (e.g. `epic_id: 010`) are parsed as
+  // octal by the YAML 1.1 spec → 010 octal = 8 decimal.  gray-matter follows
+  // this, so without an explicit fix, a round-trip through --update would
+  // rewrite `epic_id: 010` as `epic_id: 8`.  The fix in aggregate-epics.js
+  // forces epic_id to a zero-padded string before writing.
+
+  describe('YAML octal-safe epic_id: leading-zero id survives --update round-trip', () => {
+    let tmpDir, epicMdPath;
+    const matter = require('gray-matter');
+
+    before(() => {
+      // Write an epic.md with a *bare* (unquoted) leading-zero epic_id so
+      // that gray-matter parses it as the integer 8.  After --update the fix
+      // must ensure the written value is the string "010", not the number 8.
+      tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'agg-epics-octal-'));
+      const epicsDir = path.join(tmpDir, 'docs', 'epics');
+      const epicDir  = path.join(epicsDir, '010-monetisation');
+      const statusDirs = ['pending','in-progress','qa','done','blocked','bugs'];
+      statusDirs.forEach(sd => fs.mkdirSync(path.join(epicDir, sd), { recursive: true }));
+
+      // Intentionally bare (unquoted) epic_id to trigger the octal parse.
+      const epicMdContent = `---
+epic_id: 010
+epic_name: Monetisation Platform
+epic_status: pending
+epic_version: v1.8.0
+priority: medium
+total_stories: 0
+completed_stories: 0
+total_points: 0
+completed_points: 0
+completion_pct: 0
+stories_by_status:
+  pending: 0
+  in-progress: 0
+  qa: 0
+  done: 0
+  blocked: 0
+created_at: "2026-01-01T00:00:00Z"
+updated_at: "2026-01-01T00:00:00Z"
+---
+
+# Epic 010: Monetisation Platform
+
+Test epic.
+`;
+      epicMdPath = path.join(epicDir, 'epic.md');
+      fs.writeFileSync(epicMdPath, epicMdContent, 'utf-8');
+
+      // Add one pending story so --update has real stats to write.
+      const storyContent = buildStoryMd({
+        id: '010-001', name: 'Container Architecture',
+        status: 'pending', file: '010-001.md',
+        points: 13, uacTotal: 2, uacCompleted: 0, fe: 1, be: 1, cli: 0, test: 0,
+      });
+      fs.writeFileSync(path.join(epicDir, 'pending', '010-001.md'), storyContent, 'utf-8');
+
+      // Run --update to trigger the round-trip rewrite.
+      const scriptPath = path.resolve(__dirname, 'aggregate-epics.js');
+      const docsPath   = path.join(tmpDir, 'docs');
+      execSync(`node "${scriptPath}" --docs-path="${docsPath}" --update`, { encoding: 'utf-8' });
+    });
+
+    after(() => fs.rmSync(tmpDir, { recursive: true, force: true }));
+
+    it('epic_id is the string "010" after rewrite (not the integer 8)', () => {
+      const { data } = matter(fs.readFileSync(epicMdPath, 'utf-8'));
+      assert.strictEqual(typeof data.epic_id, 'string', 'epic_id must be a string');
+      assert.equal(data.epic_id, '010');
+    });
+
+    it('epic_id round-trips without octal corruption (≠ 8)', () => {
+      const { data } = matter(fs.readFileSync(epicMdPath, 'utf-8'));
+      assert.notEqual(data.epic_id, 8, 'epic_id must not be corrupted to the octal value 8');
+    });
+
+    it('epic stats are still correct after rewrite', () => {
+      const { data } = matter(fs.readFileSync(epicMdPath, 'utf-8'));
+      assert.equal(data.total_stories, 1);
+      assert.equal(data.total_points, 13);
+      assert.equal(data.epic_status, 'pending');
+    });
+  });
+
   describe('--reconcile: implies --update, refreshes epic.md stats', () => {
     let tmpDir, epicMdContent;
     const matter = require('gray-matter');

@@ -19,6 +19,17 @@ description: Update progress tracking docs using aggregate-epics.js --reconcile 
 
    If on safe branch: display "✅ Branch: {branch_name}"
 
+1b. Detect & Verify Unmarked Completions
+    Find in-progress stories with unchecked UACs.
+    If recent agent activity/commits suggest some UACs were just completed,
+    Display prompt to user:
+    "🔍 Unchecked UACs detected in active stories:
+     - {story_id}: {uac_text}
+     Mark them as complete? [y/N]"
+    For any confirmed UAC, run:
+    // turbo
+    node .ai-dev/ai-dev-scripts/check-uac.js --story={story_id} --uac="{uac_text}"
+
 2. Run Aggregation + Reconcile Script
    // ⚠️ KEY SCRIPT — run this first, all stats come from here
    // Script location: .ai-dev/ai-dev-scripts/aggregate-epics.js

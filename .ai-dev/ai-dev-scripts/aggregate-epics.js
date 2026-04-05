@@ -336,7 +336,12 @@ function readEpic(epicDirName, epicDirPath) {
     fm.epic_status        !== epicStatus;
 
   return {
-    epicId:           fm.epic_id      || epicDirName.match(/^(\d{3})/)?.[1] || epicDirName,
+    // Prefer the directory-name prefix as the canonical epic ID — it is always
+    // the plain string "010", "009", etc.  Falling back to fm.epic_id is
+    // dangerous because bare leading-zero integers in YAML (e.g. `010`) are
+    // parsed as octal by gray-matter (010 octal = 8 decimal), so fm.epic_id
+    // may already be the corrupted integer 8 by the time we read it here.
+    epicId:           epicDirName.match(/^(\d{3})/)?.[1] || String(fm.epic_id).padStart(3, '0') || epicDirName,
     epicName:         fm.epic_name    || epicDirName,
     epicDir:          epicDirName,
     epicVersion:      fm.epic_version || null,
@@ -368,6 +373,9 @@ function writeEpicStats(epic) {
   const now = new Date().toISOString();
   const newFm = {
     ...epic._epicFm,
+    // Force epic_id to a quoted string — bare leading-zero numbers (e.g. 010) are
+    // parsed as octal by YAML (010 → 8). String() + padStart ensures '010' round-trips.
+    epic_id:           epic.epicId,
     epic_status:       epic.epicStatus,
     total_stories:     epic.totalStories,
     completed_stories: epic.completedStories,

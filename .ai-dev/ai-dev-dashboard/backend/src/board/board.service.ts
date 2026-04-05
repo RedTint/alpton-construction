@@ -44,7 +44,7 @@ export class BoardService {
       if (uacMatch) {
         const lines = uacMatch[1].split('\n').map(l => l.trim()).filter(l => l.startsWith('- ['));
         for (const line of lines) {
-          const match = line.match(/^- \[( |x|X)\] (.*?): (.*)/);
+          const match = line.match(/^-\s+\[( |x|X)\]\s+(.*?):\s*(.*)/i);
           if (match) {
             uacs.push({
               status: match[1].trim() ? 'completed' : 'pending',
@@ -52,7 +52,7 @@ export class BoardService {
               description: match[3].trim(),
             });
           } else {
-            const genericMatch = line.match(/^- \[( |x|X)\] (.*)/);
+            const genericMatch = line.match(/^-\s+\[( |x|X)\]\s+(.*)/i);
             if (genericMatch) {
               uacs.push({
                 status: genericMatch[1].trim() ? 'completed' : 'pending',
@@ -67,12 +67,10 @@ export class BoardService {
       // Map "done" status from file to "completed" for the frontend
       const mappedStatus = s.status === 'done' ? 'completed' : (s.status === 'in-progress' ? 'in_progress' : s.status);
 
-      if (mappedStatus === 'completed') {
-        uacs.forEach((u) => { u.status = 'completed'; });
-      }
-
-      totalUacs += uacs.length;
-      completedUacs += uacs.filter(u => u.status === 'completed').length;
+      // We no longer blindly force UAC status here. 
+      // We also read the REAL UAC counts from frontmatter (maintained by aggregate-epics.js).
+      totalUacs += Number(fm.uac_total || 0);
+      completedUacs += Number(fm.uac_completed || 0);
 
       const effort = Number(fm.story_points || fm.effort || s.effort || 0);
       totalPoints += effort;
@@ -195,7 +193,7 @@ export class BoardService {
         overall_completion_pct: metrics.completion_pct,
       },
       stories: enrichedStories,
-      releases: Object.values(releasesMap),
+      releases: Object.values(releasesMap).filter(r => r.released_at !== ''),
       metrics,
     };
   }

@@ -43,6 +43,33 @@ Automatically update progress tracking documentation based on completion status 
        ⚠️  Git Branch: {branch_name} (protected - updating with confirmation)
        ```
 
+### Phase 1b: Detect & Verify Unmarked Completions
+
+1. **Find Unchecked UACs in Active Stories**
+   - Identify all `in-progress` stories (or search `docs/epics/*/*/` for unchecked box lines `- [ ]`).
+   - Extract the unchecked UAC descriptions for recent or active work contexts.
+
+2. **Cross-Reference Recent Activity**
+   - If you (the agent) have recently completed implementation steps covering those UACs, OR if the user's recent prompts suggest completion:
+   - Prepare a summary of which UACs look complete.
+
+3. **Consult User for Confirmation**
+   - Use the `AskUserQuestion` tool to halt execution and present the suspected completed UACs to the user:
+     ```
+     🔍 I noticed these UACs are currently unchecked:
+     - [Story 007-xxx]: "FE: Toggle UI shows feature status"
+     
+     Did you complete any of these in our recent session? [Yes/No/List]
+     ```
+
+4. **Execute Completion Script**
+   - For any UAC the user confirms, run `check-uac.js`:
+     ```bash
+     node .ai-dev/ai-dev-scripts/check-uac.js --story={STORY_ID} --uac="{UAC text snippet}"
+     ```
+   - This automatically marks the checkbox `- [x]` and appends a `## Changelog` entry without disturbing formatting.
+   - Any checked UACs will be subsequently picked up and promoted by the Reconcile phase below.
+
 ### Phase 2: Aggregate Epic & Story Stats
 
 1. **Detect Project Format**

@@ -345,6 +345,31 @@ Create an individual story file in `docs/epics/` using the `create-story-file.js
 
    If the script exits non-zero, display the error but don't abort — fall back to manual file creation following the v2 story format.
 
+### Phase 5c: Post-Creation Validation
+
+1. **Validate the new story file**
+   ```bash
+   node .ai-dev/ai-dev-scripts/validate-stories.js --docs-path=./docs --epic={selectedEpicId}
+   ```
+   - Confirms YAML frontmatter is valid
+   - Verifies UAC counts match body checkboxes
+   - Checks dependency IDs resolve to existing stories
+
+2. **Check dependency graph for issues**
+   ```bash
+   node .ai-dev/ai-dev-scripts/dependency-graph.js --docs-path=./docs --output=json
+   ```
+   - Detect circular dependencies introduced by the new story
+   - Show parallelizable stories (what can be built next)
+   - Display any warnings
+
+3. **Display validation results**
+   ```
+   🔍 Validation: ✅ Story {STORY_ID} passes all checks
+   🔗 Dependencies: {N} resolved, 0 circular, {M} stories now parallelizable
+   ```
+   If validation reports errors (broken dependency IDs, cycles), warn the user and suggest fixes.
+
 ### Phase 6: Create Draft Architecture Documents
 
 1. **Determine Which Docs to Create**

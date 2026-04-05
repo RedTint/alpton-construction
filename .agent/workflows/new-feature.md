@@ -119,6 +119,19 @@ description: Add new feature to latest PRD and Atomic Stories, select/create tar
    Display: ✅ Epic story file created: {STORY_FILE}
    If script fails, fall back to manual file creation following the v2 story format.
 
+7b. Post-Creation Validation
+    // turbo
+    node .ai-dev/ai-dev-scripts/validate-stories.js --docs-path=./docs --epic={selectedEpicId}
+
+    Confirm: YAML valid, UAC counts match, dependency IDs exist.
+
+    // turbo
+    node .ai-dev/ai-dev-scripts/dependency-graph.js --docs-path=./docs --output=json
+
+    Check for circular dependencies introduced by new story.
+    Display: "🔍 Validation: ✅ Story {STORY_ID} passes | 🔗 Dependencies: {N} resolved, 0 cycles"
+    If errors found, warn user and suggest fixes.
+
 8. Create Draft Architecture Documents
    Use copy-then-edit pattern for each affected component:
 

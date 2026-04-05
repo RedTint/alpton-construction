@@ -28,6 +28,9 @@
  *   --tags=<csv>            Comma-separated tags
  *   --dependencies=<csv>    Comma-separated dependency story IDs
  *   --version=<string>      Version tag (e.g. v1.7.0)
+ *   --status=<string>       pending|in-progress|qa|done|blocked (default: pending)
+ *   --completed-at=<iso>    ISO timestamp for done stories (defaults to now if --status=done)
+ *   --uac-completed=<n>     Number of UACs already completed (default: 0, auto-set to total if --status=done)
  *   --dry-run               Print file content without writing
  *
  * Output:
@@ -77,6 +80,9 @@ function parseArgs() {
     tags:         get('--tags='),
     dependencies: get('--dependencies='),
     version:      get('--version='),
+    status:       get('--status=') || 'pending',
+    completedAt:  get('--completed-at='),
+    uacCompleted: get('--uac-completed='),
     dryRun:       args.includes('--dry-run'),
   };
 }
@@ -223,17 +229,28 @@ function main() {
   }
   const uacTotal = uacs.length;
 
+  // Validate status
+  const validStatuses = ['pending', 'in-progress', 'qa', 'done', 'blocked'];
+  const status = validStatuses.includes(opts.status) ? opts.status : 'pending';
+
+  // Resolve completed-at: explicit value, or now() if done, else null
+  const now = new Date().toISOString();
+  const completedAt = opts.completedAt
+    ? opts.completedAt
+    : (status === 'done' ? now : null);
+
   // Calculate story number
   const storyNum = findNextStoryNumber(epicDirPath);
-  const storyId = `${opts.epicId}-${storyNum}`;
+  const storyNumPadded = String(storyNum).padStart(3, '0');
+  const storyId = `${opts.epicId}-${storyNumPadded}`;
   const slug = slugify(opts.title);
-  const fileName = `${opts.epicId}-${storyNum}-${slug}.md`;
+  const fileName = `${opts.epicId}-${storyNumPadded}-${slug}.md`;
 
-  // Ensure pending directory
-  const pendingDir = path.join(epicDirPath, 'pending');
-  if (!fs.existsSync(pendingDir)) fs.mkdirSync(pendingDir, { recursive: true });
+  // Ensure target status directory exists
+  const targetDir = path.join(epicDirPath, status);
+  if (!fs.existsSync(targetDir)) fs.mkdirSync(targetDir, { recursive: true });
 
-  const filePath = path.join(pendingDir, fileName);
+  const filePath = path.join(targetDir, fileName);
 
   // Parse tags and dependencies
   const tags = opts.tags ? opts.tags.split(',').map(t => t.trim()) : [epicVersion];
@@ -242,14 +259,19 @@ function main() {
   // Discover related docs
   const relatedDocs = discoverRelatedDocs(opts.docsPath);
 
-  const now = new Date().toISOString();
+  // Resolve uac_completed: explicit value, or uacTotal if done, else 0
+  const uacCompletedCount = opts.uacCompleted !== null && opts.uacCompleted !== undefined
+    ? parseInt(opts.uacCompleted, 10)
+    : (status === 'done' ? uacTotal : 0);
+  const uacPending = Math.max(0, uacTotal - uacCompletedCount);
+  const uacPct = uacTotal > 0 ? Math.round((uacCompletedCount / uacTotal) * 100) : 0;
 
   // Build YAML frontmatter
   const frontmatter = {
     story_id: storyId,
     epic_id: opts.epicId,
     story_name: opts.title,
-    story_status: 'pending',
+    story_status: status,
     priority: opts.priority,
     story_points: opts.points,
     assignees: [],
@@ -257,11 +279,11 @@ function main() {
     dependencies,
     created_at: now,
     updated_at: now,
-    completed_at: null,
+    completed_at: completedAt,
     uac_total: uacTotal,
-    uac_completed: 0,
-    uac_pending: uacTotal,
-    uac_completion_pct: 0,
+    uac_completed: uacCompletedCount,
+    uac_pending: uacPending,
+    uac_completion_pct: uacPct,
     uac_by_type: uacByType,
     design_links: [],
     architecture_refs: [],
@@ -291,14 +313,15 @@ function main() {
     body += '**As a** [persona]\n**I want** [capability]\n**So that** [benefit]\n';
   }
 
-  // UAC section
+  // UAC section — use [x] for done stories (all completed), [ ] otherwise
+  const uacCheck = status === 'done' ? '[x]' : '[ ]';
   body += '\n## User Acceptance Criteria\n\n';
   if (uacs.length > 0) {
     for (const uac of uacs) {
-      body += `- [ ] ${(uac.type || 'FE').toUpperCase()}: ${uac.text}\n`;
+      body += `- ${uacCheck} ${(uac.type || 'FE').toUpperCase()}: ${uac.text}\n`;
     }
   } else {
-    body += '- [ ] FE: [Description needed]\n- [ ] BE: [Description needed]\n- [ ] TEST: [Description needed]\n';
+    body += `- ${uacCheck} FE: [Description needed]\n- ${uacCheck} BE: [Description needed]\n- ${uacCheck} TEST: [Description needed]\n`;
   }
 
   // Test Requirements
@@ -318,7 +341,8 @@ function main() {
   body += '\n## Notes\n\n';
 
   // Changelog
-  body += `## Changelog\n- **${now}** — Story created via \`create-story-file.js\`\n`;
+  const statusNote = status === 'done' ? ` (created as done — resolved on ${completedAt})` : '';
+  body += `## Changelog\n- **${now}** — Story created via \`create-story-file.js\`${statusNote}\n`;
 
   // Related Documentation
   body += '\n## Related Documentation\n';
